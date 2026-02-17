@@ -1,41 +1,115 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8"/><title>Admin - ครัว</title>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>จัดการร้าน - RanKaiNam</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <style>body { font-family: 'Kanit', sans-serif; }</style>
 </head>
-<body class="bg-[#121212] text-white font-['Kanit'] p-6">
-    <div class="max-w-4xl mx-auto">
-        <h1 class="text-2xl font-bold mb-6 flex items-center gap-2">👨‍🍳 คิวงานครัว (<span id="q-count">0</span>)</h1>
-        <div id="kitchen-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+<body class="bg-slate-50 p-4 md:p-8">
+    <div class="max-w-5xl mx-auto space-y-8">
+        <header class="flex justify-between items-center">
+            <h1 class="text-2xl font-bold flex items-center gap-2">⚙️ จัดการร้าน (Admin)</h1>
+            <a href="index.html" class="bg-indigo-600 text-white px-4 py-2 rounded-lg font-bold">ไปหน้าร้าน</a>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                <h2 id="form-title" class="text-xl font-bold mb-6">➕ เพิ่มเมนูใหม่</h2>
+                <div class="space-y-4">
+                    <input type="hidden" id="edit-index" value="-1">
+                    <input type="text" id="menu-name" placeholder="ชื่อเมนู" class="w-full border rounded-xl p-3 outline-none focus:ring-2 focus:ring-indigo-400">
+                    <input type="number" id="menu-price" placeholder="ราคา" class="w-full border rounded-xl p-3">
+                    <div>
+                        <label class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-xl cursor-pointer bg-slate-50">
+                            <span class="text-sm font-bold text-slate-500">คลิกเพื่อเลือกรูปภาพจากแกลเลอรี่</span>
+                            <input type="file" id="image-input" class="hidden" accept="image/*" onchange="previewImg(this)">
+                        </label>
+                        <img id="preview" class="mt-4 w-24 h-24 object-cover rounded-xl hidden">
+                    </div>
+                    <button onclick="saveMenu()" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl shadow-lg">บันทึกข้อมูลเมนู</button>
+                </div>
+                <div id="menu-management-list" class="mt-8 space-y-2"></div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                <h2 class="text-xl font-bold mb-6 flex items-center gap-2">👨‍🍳 คิวงานครัว (<span id="q-count">0</span>)</h2>
+                <div id="kitchen-display" class="space-y-4"></div>
+            </div>
+        </div>
     </div>
+
     <script>
-        function load() {
+        let selectedImageData = "";
+        function previewImg(input) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    selectedImageData = e.target.result;
+                    document.getElementById('preview').src = selectedImageData;
+                    document.getElementById('preview').classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function saveMenu() {
+            const name = document.getElementById('menu-name').value;
+            const price = parseInt(document.getElementById('menu-price').value);
+            const index = parseInt(document.getElementById('edit-index').value);
+            if(!name || !price || !selectedImageData) return alert('กรอกข้อมูลให้ครบครับ');
+
+            let menus = JSON.parse(localStorage.getItem('myMenus')) || [];
+            const menuData = { name, price, image: selectedImageData };
+            if (index === -1) menus.push(menuData);
+            else menus[index] = menuData;
+
+            localStorage.setItem('myMenus', JSON.stringify(menus));
+            location.reload();
+        }
+
+        function deleteMenu(i) {
+            if(confirm('ลบเมนูนี้ใช่ไหม?')) {
+                let menus = JSON.parse(localStorage.getItem('myMenus'));
+                menus.splice(i, 1);
+                localStorage.setItem('myMenus', JSON.stringify(menus));
+                location.reload();
+            }
+        }
+
+        function loadAdmin() {
+            // โหลดรายการสำหรับแก้ไข/ลบ
+            const menus = JSON.parse(localStorage.getItem('myMenus')) || [];
+            document.getElementById('menu-management-list').innerHTML = menus.map((m, i) => `
+                <div class="flex items-center gap-3 p-2 bg-slate-50 rounded-lg border">
+                    <img src="${m.image}" class="w-10 h-10 object-cover rounded-md">
+                    <span class="flex-1 text-sm font-bold">${m.name}</span>
+                    <button onclick="deleteMenu(${i})" class="text-red-500 material-symbols-outlined text-sm">delete</button>
+                </div>`).join('');
+
+            // โหลดรายการครัว
             const orders = JSON.parse(localStorage.getItem('kitchenOrders')) || [];
             document.getElementById('q-count').innerText = orders.length;
-            const grid = document.getElementById('kitchen-grid');
-            
-            if(orders.length === 0) { grid.innerHTML = '<p class="opacity-30">ไม่มีออเดอร์ค้าง</p>'; return; }
-
-            grid.innerHTML = orders.map((o, idx) => `
-                <div class="bg-white/5 border border-white/10 p-6 rounded-2xl shadow-xl">
-                    <div class="flex justify-between mb-4"><span class="font-bold text-[#48C9B0]">${o.id}</span><span>${o.time}</span></div>
-                    <div class="space-y-1 mb-6">${o.items.map(it => `<p class="text-sm">${it.qty}x ${it.name}</p>`).join('')}</div>
-                    <button onclick="done(${idx})" class="w-full bg-green-600 font-bold py-3 rounded-xl hover:bg-green-500">เสร็จสิ้นออเดอร์</button>
-                </div>
-            `).join('');
+            document.getElementById('kitchen-display').innerHTML = orders.map((o, idx) => `
+                <div class="border p-4 rounded-xl bg-slate-50">
+                    <div class="flex justify-between font-bold text-indigo-600 mb-2"><span>${o.id}</span><span>${o.time}</span></div>
+                    <div class="text-sm mb-4">${o.items.map(it => `<p>${it.qty}x ${it.name}</p>`).join('')}</div>
+                    <button onclick="done(${idx})" class="w-full bg-green-600 text-white py-2 rounded-lg font-bold">ทำเสร็จแล้ว</button>
+                </div>`).join('');
         }
+
         function done(idx) {
             let orders = JSON.parse(localStorage.getItem('kitchenOrders')) || [];
             let completed = JSON.parse(localStorage.getItem('completedOrders')) || [];
             completed.push(orders.splice(idx, 1)[0]);
             localStorage.setItem('kitchenOrders', JSON.stringify(orders));
             localStorage.setItem('completedOrders', JSON.stringify(completed));
-            load();
+            loadAdmin();
         }
-        setInterval(load, 2000); load();
+        loadAdmin();
     </script>
 </body>
 </html>
