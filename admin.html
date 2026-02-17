@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html class="dark" lang="th">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>จัดการเมนู - RanKaiNam</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: { "primary": "#48C9B0", "background-dark": "#121212", "surface-dark": "#1e1e1e" },
+                    fontFamily: { "display": ["Kanit", "sans-serif"] },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-dark text-white font-display min-h-screen p-6">
+    <div class="max-w-md mx-auto">
+        <div class="flex items-center justify-between mb-8">
+            <h1 class="text-2xl font-bold">จัดการเมนูร้าน 🛠️</h1>
+            <a href="index.html" class="text-gray-400 hover:text-white">กลับหน้าร้าน</a>
+        </div>
+
+        <div class="bg-surface-dark p-6 rounded-2xl border border-white/10 shadow-lg">
+            <h2 class="text-lg font-bold text-primary mb-4">เพิ่มเมนูใหม่</h2>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm text-gray-400 mb-1">ชื่อเมนู</label>
+                    <input type="text" id="menuName" placeholder="เช่น แตงโมปั่น" class="w-full bg-black/30 rounded-lg border-white/10 text-white focus:ring-primary focus:border-primary">
+                </div>
+                
+                <div>
+                    <label class="block text-sm text-gray-400 mb-1">ราคา (บาท)</label>
+                    <input type="number" id="menuPrice" placeholder="เช่น 50" class="w-full bg-black/30 rounded-lg border-white/10 text-white focus:ring-primary focus:border-primary">
+                </div>
+
+                <div>
+                    <label class="block text-sm text-gray-400 mb-1">ลิงก์รูปภาพ (URL)</label>
+                    <input type="text" id="menuImage" placeholder="วางลิงก์รูปภาพจากเน็ต..." class="w-full bg-black/30 rounded-lg border-white/10 text-white focus:ring-primary focus:border-primary">
+                    <p class="text-xs text-gray-500 mt-1">*คลิกขวาที่รูปใน Google > Copy Image Address มาวาง</p>
+                </div>
+
+                <button onclick="addNewMenu()" class="w-full bg-primary text-black font-bold py-3 rounded-xl hover:bg-green-400 transition-colors mt-2">
+                    + บันทึกเมนู
+                </button>
+            </div>
+        </div>
+
+        <div class="mt-8">
+            <h3 class="text-lg font-bold mb-4">เมนูที่เพิ่มล่าสุด</h3>
+            <div id="admin-list" class="space-y-3">
+                </div>
+            <button onclick="clearAllData()" class="mt-6 text-red-400 text-sm underline w-full text-center">ล้างข้อมูลเมนูที่เพิ่มเองทั้งหมด</button>
+        </div>
+    </div>
+
+    <script>
+        // โหลดข้อมูลเก่ามาแสดงทันทีที่เข้าหน้าเว็บ
+        renderAdminList();
+
+        function addNewMenu() {
+            // 1. ดึงค่าจากช่องกรอก
+            const name = document.getElementById('menuName').value;
+            const price = document.getElementById('menuPrice').value;
+            const image = document.getElementById('menuImage').value || 'https://images.unsplash.com/photo-1610970881699-44a5587cabec?q=80&w=600'; // รูปสำรอง
+
+            if(!name || !price) {
+                alert('กรุณากรอกชื่อและราคา');
+                return;
+            }
+
+            // 2. สร้างออบเจกต์เมนู
+            const newMenu = { name, price, image };
+
+            // 3. บันทึกลง Local Storage
+            let menus = JSON.parse(localStorage.getItem('myMenus')) || [];
+            menus.push(newMenu);
+            localStorage.setItem('myMenus', JSON.stringify(menus));
+
+            // 4. เคลียร์ช่องและรีเฟรชรายการ
+            document.getElementById('menuName').value = '';
+            document.getElementById('menuPrice').value = '';
+            document.getElementById('menuImage').value = '';
+            alert('บันทึกสำเร็จ!');
+            renderAdminList();
+        }
+
+        function renderAdminList() {
+            const list = document.getElementById('admin-list');
+            list.innerHTML = '';
+            const menus = JSON.parse(localStorage.getItem('myMenus')) || [];
+
+            menus.forEach((menu, index) => {
+                list.innerHTML += `
+                    <div class="flex items-center gap-3 bg-surface-dark p-3 rounded-xl border border-white/5">
+                        <img src="${menu.image}" class="w-12 h-12 rounded-lg object-cover">
+                        <div class="flex-1">
+                            <h4 class="font-bold text-white">${menu.name}</h4>
+                            <p class="text-primary text-sm">฿ ${menu.price}</p>
+                        </div>
+                        <button onclick="deleteMenu(${index})" class="text-red-400 hover:text-red-300">ลบ</button>
+                    </div>
+                `;
+            });
+        }
+
+        function deleteMenu(index) {
+            let menus = JSON.parse(localStorage.getItem('myMenus')) || [];
+            menus.splice(index, 1);
+            localStorage.setItem('myMenus', JSON.stringify(menus));
+            renderAdminList();
+        }
+
+        function clearAllData() {
+            if(confirm('ยืนยันลบเมนูที่เพิ่มเองทั้งหมด?')) {
+                localStorage.removeItem('myMenus');
+                renderAdminList();
+            }
+        }
+    </script>
+</body>
+</html>
