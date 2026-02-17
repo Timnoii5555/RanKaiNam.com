@@ -1,156 +1,191 @@
 <!DOCTYPE html>
-<html lang="th"><head>
+<html lang="th">
+<head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>สถานะการจัดเตรียมออเดอร์ - RanKaiNam</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <style type="text/tailwindcss">
-        :root {
-            --mint-accent: #48C9B0;
-            --dark-bg: #0D0D0D;
-            --card-bg: #1A1A1A;
-        }
-        .progress-ring__circle {
-            transition: stroke-dashoffset 0.35s;
-            transform: rotate(-90deg);
-            transform-origin: 50% 50%;
-        }
-        .step-line {
-            width: 2px;
-            background: linear-gradient(to bottom, var(--mint-accent) 50%, #333 50%);
-            background-size: 100% 200%;
-            background-position: bottom;
-            transition: background-position 0.5s ease;
-        }
-        .step-line.active {
-            background-position: top;
-        }
-    </style>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
+    :root {
+        --mint-accent: #48C9B0;
+        --dark-bg: #0D0D0D;
+        --card-bg: #1A1A1A;
     }
-  </style>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
+    body { background-color: var(--dark-bg); color: white; font-family: 'Kanit', sans-serif; }
+    .progress-ring__circle {
+        transition: stroke-dashoffset 0.5s ease-in-out, stroke 0.3s;
+        transform: rotate(-90deg);
+        transform-origin: 50% 50%;
     }
-  </style>
-  </head>
-<body class="bg-[var(--dark-bg)] font-['Kanit'] text-white max-w-md mx-auto min-h-screen flex flex-col selection:bg-[var(--mint-accent)] selection:text-black">
-<header class="px-6 py-4 flex justify-between items-center bg-[var(--dark-bg)]/80 backdrop-blur-md sticky top-0 z-50 border-b border-white/5">
-<button class="w-10 h-10 flex items-center justify-center rounded-full bg-white/5">
-<span class="material-symbols-outlined text-gray-400">arrow_back_ios_new</span>
-</button>
-<div class="text-center">
-<h1 class="text-sm font-light text-gray-400 tracking-widest uppercase">ติดตามออเดอร์</h1>
-<p class="text-lg font-bold" id="order-id-header">#2849-01</p>
-</div>
-<div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center relative">
-<span class="material-symbols-outlined text-gray-400">notifications_active</span>
-<span class="absolute top-2.5 right-2.5 w-2 h-2 bg-[var(--mint-accent)] rounded-full"></span>
-</div>
-</header>
-<main class="px-6 py-8 flex-1 flex flex-col space-y-10">
-<div class="relative flex justify-center items-center py-4">
-<div class="absolute inset-0 flex flex-col items-center justify-center">
-<span class="text-[var(--mint-accent)] text-4xl font-bold tracking-tighter">12</span>
-<span class="text-gray-500 text-[10px] uppercase font-semibold">นาทีที่เหลือ</span>
-</div>
-<svg class="w-48 h-48" viewBox="0 0 100 100">
-<circle class="text-white/5" cx="50" cy="50" fill="transparent" r="44" stroke="currentColor" stroke-width="6"></circle>
-<circle class="text-[var(--mint-accent)] progress-ring__circle" cx="50" cy="50" fill="transparent" r="44" stroke="currentColor" stroke-dasharray="276.46" stroke-dashoffset="69" stroke-linecap="round" stroke-width="6"></circle>
-</svg>
-<div class="absolute w-40 h-40 bg-[var(--mint-accent)]/10 blur-[60px] rounded-full -z-10"></div>
-</div>
-<div class="bg-[var(--card-bg)] p-6 rounded-[2.5rem] border border-white/5 shadow-2xl relative overflow-hidden">
-<div class="hidden absolute inset-0 bg-[var(--mint-accent)] flex flex-col items-center justify-center text-black z-20" id="ready-overlay">
-<span class="material-symbols-outlined text-6xl mb-2">celebration</span>
-<span class="text-2xl font-bold">ออเดอร์พร้อมแล้ว!</span>
-<span class="text-sm opacity-80 uppercase tracking-widest">รับได้ที่เคาน์เตอร์</span>
-</div>
-<div class="space-y-8">
-<div class="flex gap-4 group">
-<div class="flex flex-col items-center">
-<div class="w-8 h-8 rounded-full bg-[var(--mint-accent)] flex items-center justify-center ring-4 ring-[var(--mint-accent)]/20">
-<span class="material-symbols-outlined text-black text-sm font-bold">check</span>
-</div>
-<div class="w-[2px] h-full bg-[var(--mint-accent)] mt-2"></div>
-</div>
-<div class="pb-6">
-<h3 class="text-white font-semibold">ยืนยันออเดอร์แล้ว</h3>
-<p class="text-xs text-gray-500">เราได้รับคำสั่งซื้อของคุณแล้ว</p>
-</div>
-</div>
-<div class="flex gap-4">
-<div class="flex flex-col items-center">
-<div class="w-8 h-8 rounded-full bg-[var(--mint-accent)] flex items-center justify-center ring-4 ring-[var(--mint-accent)]/20">
-<span class="material-symbols-outlined text-black text-sm animate-spin">refresh</span>
-</div>
-<div class="w-[2px] h-full bg-white/10 mt-2"></div>
-</div>
-<div class="pb-6">
-<h3 class="text-white font-semibold">กำลังเตรียมเครื่องดื่ม</h3>
-<p class="text-xs text-gray-500">กำลังผสมวัตถุดิบสดใหม่</p>
-</div>
-</div>
-<div class="flex gap-4">
-<div class="flex flex-col items-center">
-<div class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
-<span class="material-symbols-outlined text-gray-600 text-sm">local_mall</span>
-</div>
-</div>
-<div class="pb-2">
-<h3 class="text-gray-500 font-semibold">พร้อมรับแล้ว</h3>
-<p class="text-xs text-gray-600">รอการตรวจสอบขั้นสุดท้าย</p>
-</div>
-</div>
-</div>
-</div>
-<div class="space-y-4">
-<h4 class="text-xs font-bold text-gray-500 uppercase tracking-widest px-2">รายการที่สั่ง</h4>
-<div class="space-y-3" id="items-list">
-<div class="bg-[var(--card-bg)] p-4 rounded-2xl flex items-center justify-between border border-white/5">
-<div class="flex items-center gap-4">
-<div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center">
-<span class="material-symbols-outlined text-[var(--mint-accent)]">blender</span>
-</div>
-<div>
-<p class="text-sm font-bold">Green Detox Blast</p>
-<p class="text-[10px] text-gray-500">x1 • Large • Extra Ginger</p>
-</div>
-</div>
-<span class="text-sm font-semibold text-[var(--mint-accent)]">฿145</span>
-</div>
-<div class="bg-[var(--card-bg)] p-4 rounded-2xl flex items-center justify-between border border-white/5">
-<div class="flex items-center gap-4">
-<div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center">
-<span class="material-symbols-outlined text-[var(--mint-accent)]">icecream</span>
-</div>
-<div>
-<p class="text-sm font-bold">Mango Passion Bowl</p>
-<p class="text-[10px] text-gray-500">x1 • Regular</p>
-</div>
-</div>
-<span class="text-sm font-semibold text-[var(--mint-accent)]">฿180</span>
-</div>
-</div>
-</div>
-</main>
-<footer class="p-6">
-<button class="w-full bg-white/5 border border-white/10 text-white py-4 rounded-2xl text-sm font-semibold flex items-center justify-center gap-2 active:bg-white/10 transition-colors">
-<span class="material-symbols-outlined text-sm">chat_bubble</span>
-            ต้องการความช่วยเหลือ?
-        </button>
-</footer>
-<div class="fixed bottom-8 left-1/2 -translate-x-1/2 w-[90%] bg-[var(--mint-accent)] text-black p-5 rounded-2xl font-bold shadow-2xl flex items-center justify-between opacity-0 translate-y-20 transition-all duration-700" id="alert-popup">
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined">verified</span>
-<span class="text-sm tracking-tight">ออเดอร์ของคุณพร้อมที่เคาน์เตอร์แล้ว!</span>
-</div>
-<button class="bg-black text-white text-[10px] px-4 py-2 rounded-full uppercase tracking-widest">เสร็จสิ้น</button>
-</div>
+</style>
+</head>
+<body class="max-w-md mx-auto min-h-screen flex flex-col selection:bg-[var(--mint-accent)] selection:text-black">
+    <header class="px-6 py-4 flex justify-between items-center bg-[var(--dark-bg)]/80 backdrop-blur-md sticky top-0 z-50 border-b border-white/5">
+        <a href="index.html" class="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 transition-colors">
+            <span class="material-symbols-outlined text-gray-400">arrow_back_ios_new</span>
+        </a>
+        <div class="text-center">
+            <h1 class="text-sm font-light text-gray-400 tracking-widest uppercase">ติดตามออเดอร์</h1>
+            <p class="text-lg font-bold" id="order-id-display">#---</p>
+        </div>
+        <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center relative transition-colors" id="bell-container">
+            <span class="material-symbols-outlined text-gray-400" id="bell-icon">notifications</span>
+            <span class="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full hidden" id="bell-dot"></span>
+        </div>
+    </header>
 
-</body></html>
+    <main class="px-6 py-8 flex-1 flex flex-col space-y-10">
+        <div class="relative flex justify-center items-center py-4">
+            <div class="absolute inset-0 flex flex-col items-center justify-center transition-all duration-500" id="status-text-container">
+                <span class="text-[var(--mint-accent)] text-4xl font-bold tracking-tighter" id="status-main-text">รอ</span>
+                <span class="text-gray-500 text-[10px] uppercase font-semibold" id="status-sub-text">กำลังดำเนินการ</span>
+            </div>
+            <svg class="w-48 h-48" viewBox="0 0 100 100">
+                <circle class="text-white/5" cx="50" cy="50" fill="transparent" r="44" stroke="currentColor" stroke-width="6"></circle>
+                <circle id="progress-circle" class="text-[var(--mint-accent)] progress-ring__circle" cx="50" cy="50" fill="transparent" r="44" stroke="currentColor" stroke-dasharray="276.46" stroke-dashoffset="200" stroke-linecap="round" stroke-width="6"></circle>
+            </svg>
+            <div class="absolute w-40 h-40 bg-[var(--mint-accent)]/10 blur-[60px] rounded-full -z-10"></div>
+        </div>
+
+        <div class="bg-[var(--card-bg)] p-6 rounded-[2.5rem] border border-white/5 shadow-2xl relative overflow-hidden">
+            <div class="absolute inset-0 bg-[var(--mint-accent)] flex flex-col items-center justify-center text-black z-20 translate-y-full transition-transform duration-500" id="ready-overlay">
+                <span class="material-symbols-outlined text-6xl mb-2 animate-bounce">celebration</span>
+                <span class="text-2xl font-bold">ออเดอร์พร้อมแล้ว!</span>
+                <span class="text-sm opacity-80 uppercase tracking-widest">รับได้ที่เคาน์เตอร์</span>
+            </div>
+
+            <div class="space-y-8 relative">
+                <div class="flex gap-4 group">
+                    <div class="flex flex-col items-center">
+                        <div class="w-8 h-8 rounded-full bg-[var(--mint-accent)] flex items-center justify-center ring-4 ring-[var(--mint-accent)]/20">
+                            <span class="material-symbols-outlined text-black text-sm font-bold">check</span>
+                        </div>
+                        <div class="w-[2px] h-full bg-[var(--mint-accent)] mt-2"></div>
+                    </div>
+                    <div class="pb-6">
+                        <h3 class="text-white font-semibold">ยืนยันออเดอร์แล้ว</h3>
+                        <p class="text-xs text-gray-500">เราได้รับคำสั่งซื้อของคุณแล้ว</p>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <div class="flex flex-col items-center">
+                        <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center ring-4 ring-transparent transition-all duration-500" id="step-2-icon">
+                            <span class="material-symbols-outlined text-gray-400 text-sm animate-spin" id="step-2-symbol">refresh</span>
+                        </div>
+                        <div class="w-[2px] h-full bg-white/10 mt-2 transition-colors duration-500" id="step-2-line"></div>
+                    </div>
+                    <div class="pb-6">
+                        <h3 class="text-white font-semibold opacity-50 transition-opacity duration-500" id="step-2-text">กำลังเตรียมเครื่องดื่ม</h3>
+                        <p class="text-xs text-gray-500">กำลังผสมวัตถุดิบสดใหม่</p>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <div class="flex flex-col items-center">
+                        <div class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center transition-all duration-500" id="step-3-icon">
+                            <span class="material-symbols-outlined text-gray-600 text-sm" id="step-3-symbol">local_mall</span>
+                        </div>
+                    </div>
+                    <div class="pb-2">
+                        <h3 class="text-gray-500 font-semibold transition-colors duration-500" id="step-3-text">พร้อมรับแล้ว</h3>
+                        <p class="text-xs text-gray-600">รอการตรวจสอบขั้นสุดท้าย</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="space-y-4">
+            <h4 class="text-xs font-bold text-gray-500 uppercase tracking-widest px-2">รายการที่สั่ง</h4>
+            <div class="space-y-3" id="items-list">
+                </div>
+        </div>
+    </main>
+
+    <div class="fixed bottom-8 left-1/2 -translate-x-1/2 w-[90%] bg-[var(--mint-accent)] text-black p-5 rounded-2xl font-bold shadow-2xl flex items-center justify-between translate-y-[200%] transition-transform duration-700 z-50" id="alert-popup">
+        <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined">verified</span>
+            <span class="text-sm tracking-tight">เสร็จเรียบร้อยแล้ว!</span>
+        </div>
+        <button onclick="document.getElementById('alert-popup').style.transform = 'translate(-50%, 200%)'" class="bg-black text-white text-[10px] px-4 py-2 rounded-full uppercase tracking-widest">ปิด</button>
+    </div>
+
+    <script>
+        function checkStatus() {
+            const current = JSON.parse(localStorage.getItem('currentOrder'));
+            if (!current) {
+                document.getElementById('order-id-display').innerText = "ไม่มีออเดอร์";
+                return;
+            }
+
+            document.getElementById('order-id-display').innerText = current.id;
+            
+            // Render รายการสินค้า
+            document.getElementById('items-list').innerHTML = current.items.map(i => `
+                <div class="bg-[var(--card-bg)] p-4 rounded-2xl flex items-center justify-between border border-white/5">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center overflow-hidden">
+                            <img src="${i.image}" class="w-full h-full object-cover opacity-80">
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-white">${i.name}</p>
+                            <p class="text-[10px] text-gray-500">x${i.qty}</p>
+                        </div>
+                    </div>
+                    <span class="text-sm font-semibold text-[var(--mint-accent)]">฿${i.price * i.qty}</span>
+                </div>
+            `).join('');
+
+            // จำลองการโหลด: เริ่มต้นที่ 30% (กำลังปั่น)
+            const circle = document.getElementById('progress-circle');
+            circle.style.strokeDashoffset = 276.46 * 0.7; // 30% progress
+            
+            // เปลี่ยน UI Step 2 เป็น Active
+            document.getElementById('step-2-icon').classList.replace('bg-white/5', 'bg-[var(--mint-accent)]');
+            document.getElementById('step-2-icon').classList.remove('ring-transparent');
+            document.getElementById('step-2-icon').classList.add('ring-[var(--mint-accent)]/20', 'ring-4');
+            document.getElementById('step-2-symbol').classList.replace('text-gray-400', 'text-black');
+            document.getElementById('step-2-text').classList.remove('opacity-50');
+
+            // Polling ตรวจสอบสถานะ
+            const interval = setInterval(() => {
+                const completed = JSON.parse(localStorage.getItem('completedOrders')) || [];
+                const isDone = completed.some(o => o.id === current.id);
+
+                if (isDone) {
+                    clearInterval(interval);
+                    triggerCompleteState();
+                }
+            }, 2000);
+        }
+
+        function triggerCompleteState() {
+            // 1. วงกลมเต็ม
+            document.getElementById('progress-circle').style.strokeDashoffset = 0;
+            document.getElementById('progress-circle').classList.add('text-green-400');
+            document.getElementById('status-main-text').innerText = "100%";
+            document.getElementById('status-sub-text').innerText = "เสร็จสิ้น";
+
+            // 2. Timeline Step 3 Active
+            document.getElementById('step-2-line').classList.replace('bg-white/10', 'bg-[var(--mint-accent)]');
+            document.getElementById('step-3-icon').classList.replace('bg-white/5', 'bg-[var(--mint-accent)]');
+            document.getElementById('step-3-icon').classList.remove('border-white/10');
+            document.getElementById('step-3-symbol').innerText = "check";
+            document.getElementById('step-3-symbol').classList.replace('text-gray-600', 'text-black');
+            document.getElementById('step-3-text').classList.replace('text-gray-500', 'text-white');
+            document.getElementById('step-3-text').innerText = "เสร็จสิ้น";
+
+            // 3. Overlay & Popup & Bell
+            document.getElementById('ready-overlay').classList.remove('translate-y-full');
+            document.getElementById('alert-popup').style.transform = "translate(-50%, 0)";
+            
+            // Bell notification
+            const bell = document.getElementById('bell-icon');
+            bell.classList.add('animate-pulse', 'text-[var(--mint-accent)]');
+            document.getElementById('bell-dot').classList.remove('hidden');
+        }
+
+        checkStatus();
+    </script>
+</body>
+</html>
