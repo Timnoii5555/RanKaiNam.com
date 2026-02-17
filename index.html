@@ -30,10 +30,8 @@
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
     }
-    .active-cat {
-        background-color: var(--primary-mint);
-        color: black;
-    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 </style>
 <style> body { min-height: max(884px, 100dvh); } </style>
 </head>
@@ -75,11 +73,11 @@
         let currentFilter = 'ทั้งหมด';
 
         function loadData() {
-            // โหลดเมนู
             const menus = JSON.parse(localStorage.getItem('myMenus')) || [];
             
-            // 1. สร้างหมวดหมู่ (หาหมวดหมู่ที่ไม่ซ้ำกัน)
-            const categories = ['ทั้งหมด', ...new Set(menus.map(m => m.category))];
+            // 1. สร้างหมวดหมู่ (ดึงเฉพาะที่ไม่ซ้ำกัน)
+            const categories = ['ทั้งหมด', ...new Set(menus.map(m => m.category || 'ทั่วไป'))];
+            
             const catList = document.getElementById('category-list');
             catList.innerHTML = categories.map(cat => `
                 <span onclick="filterMenu('${cat}')" 
@@ -88,8 +86,14 @@
                 </span>
             `).join('');
 
-            // 2. แสดงสินค้าตามหมวดหมู่
-            const filteredMenus = currentFilter === 'ทั้งหมด' ? menus : menus.filter(m => m.category === currentFilter);
+            // 2. เตรียมข้อมูลสินค้า (แนบ index เดิมไปด้วย เพื่อให้กดสั่งได้ถูกต้อง)
+            const menusWithIndex = menus.map((m, originalIndex) => ({ ...m, originalIndex }));
+
+            // 3. กรองสินค้า
+            const filteredMenus = currentFilter === 'ทั้งหมด' 
+                ? menusWithIndex 
+                : menusWithIndex.filter(m => (m.category || 'ทั่วไป') === currentFilter);
+            
             const grid = document.getElementById('menu-grid');
             
             if (filteredMenus.length === 0) {
@@ -99,7 +103,7 @@
                     <div class="glass-card p-3 rounded-[2rem] flex flex-col group relative overflow-hidden">
                         <div class="relative mb-3">
                             <img src="${m.image}" class="rounded-[1.5rem] w-full aspect-square object-cover shadow-2xl">
-                            <button onclick="addToCart('${m.name}', ${m.price}, '${m.image}')" class="absolute bottom-2 right-2 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-full w-10 h-10 flex items-center justify-center hover:bg-[var(--primary-mint)] hover:text-black transition-all active:scale-90">
+                            <button onclick="addToCart(${m.originalIndex})" class="absolute bottom-2 right-2 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-full w-10 h-10 flex items-center justify-center hover:bg-[var(--primary-mint)] hover:text-black transition-all active:scale-90">
                                 <span class="material-symbols-outlined text-[20px]">add</span>
                             </button>
                         </div>
@@ -117,11 +121,29 @@
             loadData();
         }
 
-        function addToCart(name, price, image) {
+        // รับค่า index มาค้นหาข้อมูลใน localStorage แทนการรับค่าตรงๆ
+        function addToCart(index) {
+            const allMenus = JSON.parse(localStorage.getItem('myMenus')) || [];
+            const item = allMenus[index]; // ดึงข้อมูลสินค้าตัวจริง
+
+            if (!item) return;
+
             let cart = JSON.parse(localStorage.getItem('cartData')) || [];
-            let found = cart.find(x => x.name === name);
-            if(found) found.qty++; 
-            else cart.push({name, price, image, qty:1});
+            
+            // เช็คว่ามีในตะกร้าหรือยัง
+            let found = cart.find(x => x.name === item.name);
+            if(found) {
+                found.qty++; 
+            } else {
+                // บันทึกเฉพาะข้อมูลที่จำเป็น
+                cart.push({
+                    name: item.name, 
+                    price: item.price, 
+                    image: item.image, 
+                    qty: 1
+                });
+            }
+            
             localStorage.setItem('cartData', JSON.stringify(cart));
             updateCartUI();
         }
@@ -139,7 +161,6 @@
             else bar.classList.add('translate-y-full');
         }
 
-        // โหลดข้อมูลครั้งแรก
         loadData();
     </script>
 </body>
