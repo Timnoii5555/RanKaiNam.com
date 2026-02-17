@@ -96,11 +96,11 @@
                     <input id="edit-index" type="hidden" value="-1"/>
                     <div class="space-y-2">
                         <label class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider ml-1">ชื่อเมนู</label>
-                        <input class="w-full bg-[var(--bg-dark)] border-[var(--border-color)] text-white rounded-2xl p-4 outline-none focus:ring-2 focus:ring-[var(--accent-primary)] transition-all" id="menu-name" placeholder="เช่น ทรอปิคอล บลู สไปรูลิน่า" type="text"/>
+                        <input class="w-full bg-[var(--bg-dark)] border-[var(--border-color)] text-white rounded-2xl p-4 outline-none focus:ring-2 focus:ring-[var(--accent-primary)] transition-all" id="menu-name" placeholder="ชื่อสินค้า..." type="text"/>
                     </div>
                     <div class="space-y-2">
-                        <label class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider ml-1">หมวดหมู่ (สำคัญ! จะไปโผล่หน้าแรก)</label>
-                        <input class="w-full bg-[var(--bg-dark)] border-[var(--border-color)] text-white rounded-2xl p-4 outline-none focus:ring-2 focus:ring-[var(--accent-primary)] transition-all" id="menu-category" placeholder="เช่น น้ำปั่น, น้ำผลไม้, โซดา" type="text"/>
+                        <label class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider ml-1">หมวดหมู่</label>
+                        <input class="w-full bg-[var(--bg-dark)] border-[var(--border-color)] text-white rounded-2xl p-4 outline-none focus:ring-2 focus:ring-[var(--accent-primary)] transition-all" id="menu-category" placeholder="เช่น น้ำปั่น, โซดา" type="text"/>
                     </div>
                     <div class="space-y-2">
                         <label class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider ml-1">ราคา (฿)</label>
@@ -111,8 +111,7 @@
                         <label class="group flex flex-col items-center justify-center w-full h-44 border-2 border-dashed border-[var(--border-color)] hover:border-[var(--accent-secondary)] rounded-2xl cursor-pointer bg-[var(--bg-dark)]/50 transition-all overflow-hidden relative">
                             <div class="flex flex-col items-center justify-center pt-5 pb-6">
                                 <span class="material-symbols-outlined text-4xl text-[var(--text-muted)] group-hover:text-[var(--accent-secondary)] mb-2">image</span>
-                                <p class="text-sm font-medium text-[var(--text-muted)] group-hover:text-white">อัปโหลดรูปภาพความละเอียดสูง</p>
-                                <p class="text-[10px] text-slate-500 mt-1">PNG, JPG สูงสุด 10MB</p>
+                                <p class="text-sm font-medium text-[var(--text-muted)] group-hover:text-white">อัปโหลดรูปภาพ</p>
                             </div>
                             <input accept="image/*" class="hidden" id="image-input" onchange="previewImg(this)" type="file"/>
                             <img class="absolute inset-0 w-full h-full object-cover hidden" id="preview"/>
@@ -168,7 +167,7 @@
         const price = parseFloat(document.getElementById('menu-price').value);
         const index = parseInt(document.getElementById('edit-index').value);
 
-        if(!name || !category || isNaN(price) || !selectedImageData) return alert('กรุณากรอกข้อมูลให้ครบถ้วนและเพิ่มรูปภาพ');
+        if(!name || !category || isNaN(price) || !selectedImageData) return alert('กรุณากรอกข้อมูลให้ครบและเพิ่มรูปภาพ');
 
         let menus = JSON.parse(localStorage.getItem('myMenus')) || [];
         const menuData = { name, category, price, image: selectedImageData };
@@ -249,7 +248,6 @@
     function done(idx) {
         let orders = JSON.parse(localStorage.getItem('kitchenOrders')) || [];
         let completed = JSON.parse(localStorage.getItem('completedOrders')) || [];
-        
         completed.push(orders.splice(idx, 1)[0]);
         localStorage.setItem('kitchenOrders', JSON.stringify(orders));
         localStorage.setItem('completedOrders', JSON.stringify(completed));
