@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8"/><title>Admin - RanKaiNam</title>
+    <meta charset="UTF-8"/><title>Admin - ครัว</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
 </head>
 <body class="bg-[#121212] text-white font-['Kanit'] p-6">
     <div class="max-w-4xl mx-auto">
-        <h1 class="text-2xl font-bold mb-6">👨‍🍳 คิวงานห้องครัว (<span id="q-count">0</span>)</h1>
+        <h1 class="text-2xl font-bold mb-6 flex items-center gap-2">👨‍🍳 คิวงานครัว (<span id="q-count">0</span>)</h1>
         <div id="kitchen-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
     </div>
     <script>
@@ -16,12 +16,14 @@
             const orders = JSON.parse(localStorage.getItem('kitchenOrders')) || [];
             document.getElementById('q-count').innerText = orders.length;
             const grid = document.getElementById('kitchen-grid');
-            if(orders.length === 0) { grid.innerHTML = '<p class="opacity-30">ไม่มีออเดอร์ค้างจ้า</p>'; return; }
+            
+            if(orders.length === 0) { grid.innerHTML = '<p class="opacity-30">ไม่มีออเดอร์ค้าง</p>'; return; }
+
             grid.innerHTML = orders.map((o, idx) => `
-                <div class="bg-white/5 border border-white/10 p-6 rounded-2xl">
-                    <div class="flex justify-between mb-4 font-bold text-[#48C9B0]"><span>${o.id}</span><span>${o.time}</span></div>
+                <div class="bg-white/5 border border-white/10 p-6 rounded-2xl shadow-xl">
+                    <div class="flex justify-between mb-4"><span class="font-bold text-[#48C9B0]">${o.id}</span><span>${o.time}</span></div>
                     <div class="space-y-1 mb-6">${o.items.map(it => `<p class="text-sm">${it.qty}x ${it.name}</p>`).join('')}</div>
-                    <button onclick="done(${idx})" class="w-full bg-green-600 font-bold py-3 rounded-xl">ทำเสร็จแล้ว</button>
+                    <button onclick="done(${idx})" class="w-full bg-green-600 font-bold py-3 rounded-xl hover:bg-green-500">เสร็จสิ้นออเดอร์</button>
                 </div>
             `).join('');
         }
