@@ -9,7 +9,7 @@
 <body class="bg-[#121212] font-['Kanit'] text-white p-6">
     <div class="max-w-4xl mx-auto">
         <h1 class="text-2xl font-bold mb-6 flex items-center gap-2">🔥 สถานะครัว: <span id="count" class="text-[#48C9B0]">0</span> ออเดอร์</h1>
-        <button onclick="load()" class="bg-blue-600 px-4 py-2 rounded-lg font-bold mb-8">รีเฟรชออเดอร์</button>
+        <button onclick="load()" class="bg-blue-600 px-4 py-2 rounded-lg font-bold mb-8 shadow-lg active:scale-95">รีเฟรชออเดอร์</button>
         <div id="display" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
     </div>
 
@@ -20,20 +20,29 @@
             const display = document.getElementById('display');
             
             if (orders.length === 0) {
-                display.innerHTML = '<div class="col-span-full text-center opacity-50">ว่างงานจ้า 🎉</div>';
+                display.innerHTML = '<div class="col-span-full text-center py-20 opacity-50">ว่างงานจ้า 🎉</div>';
                 return;
             }
 
             display.innerHTML = orders.map((order, idx) => `
-                <div class="bg-[#1E1E1E] border border-white/10 rounded-2xl p-5">
+                <div class="bg-[#1E1E1E] border border-white/10 rounded-2xl p-5 shadow-xl">
                     <div class="flex justify-between border-b border-white/5 pb-2 mb-2">
                         <span class="font-bold text-[#48C9B0]">${order.table}</span>
                         <span class="text-xs text-gray-500">${order.time}</span>
                     </div>
                     <div class="space-y-2 mb-4">
-                        ${order.items.map(it => `<p class="text-sm">${it.qty}x ${it.name}</p>`).join('')}
+                        ${order.items.map(it => `
+                            <div class="flex justify-between text-sm">
+                                <span>${it.qty}x ${it.name}</span>
+                                <span class="text-gray-500">฿${(it.price * it.qty).toLocaleString()}</span>
+                            </div>
+                        `).join('')}
                     </div>
-                    <button onclick="done(${idx})" class="w-full bg-green-600 font-bold py-2 rounded-xl text-sm">เสร็จสิ้น</button>
+                    <div class="border-t border-white/5 pt-2 mb-4 flex justify-between font-bold">
+                        <span>ยอดรวม</span>
+                        <span class="text-[#48C9B0]">฿${order.total.toLocaleString()}</span>
+                    </div>
+                    <button onclick="done(${idx})" class="w-full bg-green-600 hover:bg-green-500 font-bold py-2 rounded-xl text-sm transition-colors">เสร็จสิ้น</button>
                 </div>
             `).join('');
         }
