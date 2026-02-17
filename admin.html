@@ -21,7 +21,6 @@
         font-family: 'Plus Jakarta Sans', 'Kanit', sans-serif;
         background-color: var(--bg-dark);
         color: var(--text-main);
-        min-height: 100vh;
     }
     .custom-glass {
         background: rgba(30, 41, 59, 0.7);
@@ -31,195 +30,236 @@
     .soft-shadow {
         box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
     }
+    input::placeholder { color: #64748b; }
 </style>
+<style> body { min-height: max(884px, 100dvh); } </style>
 </head>
-<body class="p-4 md:p-8">
-    <div class="max-w-7xl mx-auto space-y-10">
-        <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-            <div>
-                <h1 class="text-3xl font-extrabold tracking-tight flex items-center gap-3">
-                    <span class="material-symbols-outlined text-4xl text-[var(--accent-primary)]">dashboard_customize</span>
-                    แผงควบคุมผู้ดูแล
-                </h1>
-                <p class="text-[var(--text-muted)] mt-1">จัดการร้านและออเดอร์ (เชื่อมต่อกับหน้าร้านจริง)</p>
+<body class="min-h-screen p-4 md:p-8">
+<div class="max-w-7xl mx-auto space-y-10">
+    <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div>
+            <h1 class="text-3xl font-extrabold tracking-tight flex items-center gap-3">
+                <span class="material-symbols-outlined text-4xl text-[var(--accent-primary)]">dashboard_customize</span>
+                แผงควบคุมผู้ดูแล
+            </h1>
+            <p class="text-[var(--text-muted)] mt-1">จัดการร้านสมูทตี้และการดำเนินงานในครัวของคุณ</p>
+        </div>
+        <div class="flex items-center gap-4">
+            <div class="flex flex-col items-end mr-2">
+                <span class="text-xs font-bold text-[var(--accent-secondary)] uppercase tracking-widest">สถานะร้านค้า</span>
+                <span class="text-sm text-green-400 flex items-center gap-1">● ออนไลน์</span>
             </div>
             <a class="bg-white/10 hover:bg-white/20 transition-all text-white px-6 py-2.5 rounded-full font-semibold flex items-center gap-2 border border-white/10" href="index.html">
                 <span class="material-symbols-outlined text-sm">visibility</span> ดูร้านค้า
             </a>
-        </header>
+        </div>
+    </header>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
-            <div class="lg:col-span-5 space-y-8">
-                <section class="custom-glass rounded-3xl p-8 soft-shadow border border-white/5">
-                    <h2 class="text-xl font-bold mb-8 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-[var(--accent-primary)]">add_circle</span>
-                        จัดการเมนู
-                    </h2>
-                    <div class="space-y-6">
-                        <input id="edit-index" type="hidden" value="-1"/>
-                        <div class="space-y-2">
-                            <label class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider ml-1">ชื่อเมนู</label>
-                            <input class="w-full bg-[var(--bg-dark)] border-[var(--border-color)] text-white rounded-2xl p-4 outline-none focus:ring-2 focus:ring-[var(--accent-primary)] transition-all" id="menu-name" placeholder="ชื่อสินค้า..." type="text"/>
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider ml-1">ราคา (฿)</label>
-                            <input class="w-full bg-[var(--bg-dark)] border-[var(--border-color)] text-white rounded-2xl p-4 outline-none focus:ring-2 focus:ring-[var(--accent-primary)] transition-all" id="menu-price" placeholder="0.00" type="number"/>
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider ml-1">รูปภาพ</label>
-                            <label class="group flex flex-col items-center justify-center w-full h-44 border-2 border-dashed border-[var(--border-color)] hover:border-[var(--accent-secondary)] rounded-2xl cursor-pointer bg-[var(--bg-dark)]/50 transition-all overflow-hidden relative">
-                                <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                                    <span class="material-symbols-outlined text-4xl text-[var(--text-muted)] group-hover:text-[var(--accent-secondary)] mb-2">image</span>
-                                    <p class="text-sm font-medium text-[var(--text-muted)]">คลิกเพื่อเลือกรูป</p>
-                                </div>
-                                <input accept="image/*" class="hidden" id="image-input" onchange="previewImg(this)" type="file"/>
-                                <img class="absolute inset-0 w-full h-full object-cover hidden" id="preview"/>
-                            </label>
-                        </div>
-                        <button class="w-full bg-gradient-to-r from-[var(--accent-primary)] to-indigo-600 hover:opacity-90 text-white font-bold py-4 rounded-2xl shadow-lg transition-all transform active:scale-[0.98]" onclick="saveMenu()">
-                            บันทึกเมนู
-                        </button>
-                    </div>
-
-                    <div class="mt-8 pt-8 border-t border-[var(--border-color)]">
-                        <h3 class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest mb-4">รายการเมนูในร้าน</h3>
-                        <div id="menu-management-list" class="space-y-3 max-h-60 overflow-y-auto pr-2">
-                            </div>
-                    </div>
-                </section>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="custom-glass p-6 rounded-3xl soft-shadow flex items-center justify-between">
+            <div>
+                <p class="text-sm text-[var(--text-muted)]">ออเดอร์ที่กำลังดำเนินการ</p>
+                <h3 class="text-3xl font-bold mt-1" id="stat-active">0</h3>
             </div>
+            <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 flex items-center justify-center text-indigo-400">
+                <span class="material-symbols-outlined">pending_actions</span>
+            </div>
+        </div>
+        <div class="custom-glass p-6 rounded-3xl soft-shadow flex items-center justify-between">
+            <div>
+                <p class="text-sm text-[var(--text-muted)]">เสร็จสิ้นวันนี้</p>
+                <h3 class="text-3xl font-bold mt-1" id="stat-done">0</h3>
+            </div>
+            <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 flex items-center justify-center text-emerald-400">
+                <span class="material-symbols-outlined">check_circle</span>
+            </div>
+        </div>
+        <div class="custom-glass p-6 rounded-3xl soft-shadow flex items-center justify-between">
+            <div>
+                <p class="text-sm text-[var(--text-muted)]">เมนูทั้งหมด</p>
+                <h3 class="text-3xl font-bold mt-1" id="stat-menus">0</h3>
+            </div>
+            <div class="w-12 h-12 rounded-2xl bg-sky-500/20 flex items-center justify-center text-sky-400">
+                <span class="material-symbols-outlined">restaurant_menu</span>
+            </div>
+        </div>
+    </div>
 
-            <div class="lg:col-span-7">
-                <div class="flex justify-between items-center mb-6">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        <div class="lg:col-span-5 space-y-8">
+            <section class="custom-glass rounded-3xl p-8 soft-shadow border border-white/5">
+                <h2 class="text-xl font-bold mb-8 flex items-center gap-2" id="form-title">
+                    <span class="material-symbols-outlined text-[var(--accent-primary)]">add_circle</span>
+                    การจัดการคลังสินค้า
+                </h2>
+                <div class="space-y-6">
+                    <input id="edit-index" type="hidden" value="-1"/>
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider ml-1">ชื่อเมนู</label>
+                        <input class="w-full bg-[var(--bg-dark)] border-[var(--border-color)] text-white rounded-2xl p-4 outline-none focus:ring-2 focus:ring-[var(--accent-primary)] transition-all" id="menu-name" placeholder="เช่น ทรอปิคอล บลู สไปรูลิน่า" type="text"/>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider ml-1">หมวดหมู่ (สำคัญ! จะไปโผล่หน้าแรก)</label>
+                        <input class="w-full bg-[var(--bg-dark)] border-[var(--border-color)] text-white rounded-2xl p-4 outline-none focus:ring-2 focus:ring-[var(--accent-primary)] transition-all" id="menu-category" placeholder="เช่น น้ำปั่น, น้ำผลไม้, โซดา" type="text"/>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider ml-1">ราคา (฿)</label>
+                        <input class="w-full bg-[var(--bg-dark)] border-[var(--border-color)] text-white rounded-2xl p-4 outline-none focus:ring-2 focus:ring-[var(--accent-primary)] transition-all" id="menu-price" placeholder="0.00" type="number"/>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider ml-1">รูปภาพเมนู</label>
+                        <label class="group flex flex-col items-center justify-center w-full h-44 border-2 border-dashed border-[var(--border-color)] hover:border-[var(--accent-secondary)] rounded-2xl cursor-pointer bg-[var(--bg-dark)]/50 transition-all overflow-hidden relative">
+                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                <span class="material-symbols-outlined text-4xl text-[var(--text-muted)] group-hover:text-[var(--accent-secondary)] mb-2">image</span>
+                                <p class="text-sm font-medium text-[var(--text-muted)] group-hover:text-white">อัปโหลดรูปภาพความละเอียดสูง</p>
+                                <p class="text-[10px] text-slate-500 mt-1">PNG, JPG สูงสุด 10MB</p>
+                            </div>
+                            <input accept="image/*" class="hidden" id="image-input" onchange="previewImg(this)" type="file"/>
+                            <img class="absolute inset-0 w-full h-full object-cover hidden" id="preview"/>
+                        </label>
+                    </div>
+                    <button class="w-full bg-gradient-to-r from-[var(--accent-primary)] to-indigo-600 hover:opacity-90 text-white font-bold py-4 rounded-2xl shadow-[0_4px_20px_rgba(139,92,246,0.4)] transition-all transform active:scale-[0.98]" onclick="saveMenu()">
+                        บันทึกสินค้า
+                    </button>
+                </div>
+                <div class="mt-12 border-t border-[var(--border-color)] pt-8">
+                    <h3 class="text-sm font-bold text-[var(--text-muted)] uppercase tracking-widest mb-6">รายการปัจจุบัน</h3>
+                    <div class="space-y-3" id="menu-management-list"></div>
+                </div>
+            </section>
+        </div>
+
+        <div class="lg:col-span-7">
+            <div class="sticky top-8">
+                <div class="flex justify-between items-center mb-8">
                     <h2 class="text-2xl font-bold flex items-center gap-3">
                         <span class="material-symbols-outlined text-[var(--accent-secondary)]">outdoor_grill</span>
                         คิวในห้องครัว
                         <span class="bg-[var(--accent-secondary)] text-slate-900 text-xs px-2.5 py-1 rounded-full ml-1" id="q-count">0</span>
                     </h2>
-                    <button onclick="localStorage.removeItem('kitchenOrders'); localStorage.removeItem('completedOrders'); loadAdmin();" class="text-xs text-red-400 hover:underline">ล้างคิวทั้งหมด</button>
+                    <div class="flex gap-2">
+                        <button onclick="localStorage.removeItem('kitchenOrders'); loadAdmin();" class="text-red-400 text-xs hover:underline">ล้างคิว</button>
+                    </div>
                 </div>
-                <div class="grid grid-cols-1 gap-4" id="kitchen-display">
-                    <p class="text-slate-500 italic">ไม่มีออเดอร์ค้าง...</p>
-                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="kitchen-display"></div>
             </div>
         </div>
     </div>
+</div>
 
-    <script>
-        let selectedImageData = "";
-
-        function previewImg(input) {
-            const file = input.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = e => {
-                    selectedImageData = e.target.result;
-                    document.getElementById('preview').src = selectedImageData;
-                    document.getElementById('preview').classList.remove('hidden');
-                };
-                reader.readAsDataURL(file);
-            }
+<script>
+    let selectedImageData = "";
+    function previewImg(input) {
+        const file = input.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = e => {
+                selectedImageData = e.target.result;
+                document.getElementById('preview').src = selectedImageData;
+                document.getElementById('preview').classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
         }
+    }
 
-        function saveMenu() {
-            const name = document.getElementById('menu-name').value;
-            const price = parseFloat(document.getElementById('menu-price').value);
-            
-            if(!name || isNaN(price) || !selectedImageData) return alert('กรุณากรอกข้อมูลให้ครบและใส่รูปภาพ');
+    function saveMenu() {
+        const name = document.getElementById('menu-name').value;
+        const category = document.getElementById('menu-category').value;
+        const price = parseFloat(document.getElementById('menu-price').value);
+        const index = parseInt(document.getElementById('edit-index').value);
 
-            let menus = JSON.parse(localStorage.getItem('myMenus')) || [];
-            menus.push({ name, price, image: selectedImageData });
+        if(!name || !category || isNaN(price) || !selectedImageData) return alert('กรุณากรอกข้อมูลให้ครบถ้วนและเพิ่มรูปภาพ');
+
+        let menus = JSON.parse(localStorage.getItem('myMenus')) || [];
+        const menuData = { name, category, price, image: selectedImageData };
+
+        if (index === -1) menus.push(menuData);
+        else menus[index] = menuData;
+
+        localStorage.setItem('myMenus', JSON.stringify(menus));
+        location.reload();
+    }
+
+    function deleteMenu(i) {
+        if(confirm('ลบรายการเมนูนี้หรือไม่?')) {
+            let menus = JSON.parse(localStorage.getItem('myMenus'));
+            menus.splice(i, 1);
             localStorage.setItem('myMenus', JSON.stringify(menus));
-            
-            // รีเซ็ตฟอร์ม
-            document.getElementById('menu-name').value = '';
-            document.getElementById('menu-price').value = '';
-            document.getElementById('preview').classList.add('hidden');
-            selectedImageData = "";
-            alert('เพิ่มเมนูเรียบร้อย!');
-            loadAdmin();
+            location.reload();
         }
+    }
 
-        function deleteMenu(i) {
-            if(confirm('ลบเมนูนี้?')) {
-                let menus = JSON.parse(localStorage.getItem('myMenus'));
-                menus.splice(i, 1);
-                localStorage.setItem('myMenus', JSON.stringify(menus));
-                loadAdmin();
-            }
-        }
-
-        function loadAdmin() {
-            // โหลดรายการเมนู
-            const menus = JSON.parse(localStorage.getItem('myMenus')) || [];
-            document.getElementById('menu-management-list').innerHTML = menus.map((m, i) => `
-                <div class="flex items-center gap-4 p-3 bg-[var(--bg-dark)]/40 hover:bg-[var(--bg-dark)] border border-white/5 rounded-2xl transition-all">
-                    <img src="${m.image}" class="w-12 h-12 object-cover rounded-xl border border-white/10">
-                    <div class="flex-1">
-                        <div class="text-sm font-semibold text-white">${m.name}</div>
-                        <div class="text-[11px] text-[var(--accent-secondary)] font-medium">฿${m.price}</div>
+    function loadAdmin() {
+        // โหลดเมนู
+        const menus = JSON.parse(localStorage.getItem('myMenus')) || [];
+        document.getElementById('stat-menus').innerText = menus.length;
+        document.getElementById('menu-management-list').innerHTML = menus.map((m, i) => `
+            <div class="flex items-center gap-4 p-3 bg-[var(--bg-dark)]/40 hover:bg-[var(--bg-dark)] border border-white/5 rounded-2xl transition-all">
+                <img src="${m.image}" class="w-12 h-12 object-cover rounded-xl shadow-lg border border-white/10">
+                <div class="flex-1">
+                    <div class="text-sm font-semibold text-white">${m.name}</div>
+                    <div class="flex items-center gap-2 text-[11px] font-medium">
+                        <span class="text-[var(--accent-secondary)]">฿${m.price}</span>
+                        <span class="text-[var(--text-muted)]">•</span>
+                        <span class="text-[var(--text-muted)] px-2 py-0.5 rounded bg-white/5">${m.category}</span>
                     </div>
-                    <button onclick="deleteMenu(${i})" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-red-500/20 text-red-400">
-                        <span class="material-symbols-outlined text-lg">delete</span>
+                </div>
+                <button onclick="deleteMenu(${i})" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-red-500/10 text-red-400/70 hover:text-red-400 transition-colors">
+                    <span class="material-symbols-outlined text-xl">delete</span>
+                </button>
+            </div>`).join('');
+
+        // โหลดคิวครัว
+        const orders = JSON.parse(localStorage.getItem('kitchenOrders')) || [];
+        const completed = JSON.parse(localStorage.getItem('completedOrders')) || [];
+        
+        document.getElementById('q-count').innerText = orders.length;
+        document.getElementById('stat-active').innerText = orders.length;
+        document.getElementById('stat-done').innerText = completed.length;
+
+        if(orders.length === 0) {
+            document.getElementById('kitchen-display').innerHTML = '<div class="col-span-full text-center text-slate-500 py-10">ยังไม่มีออเดอร์เข้ามา</div>';
+        } else {
+            document.getElementById('kitchen-display').innerHTML = orders.map((o, idx) => `
+                <div class="custom-glass p-6 rounded-3xl soft-shadow border-l-4 border-l-[var(--accent-secondary)]">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <span class="text-[10px] font-black uppercase tracking-widest text-[var(--accent-secondary)]">รหัสออเดอร์</span>
+                            <h4 class="text-lg font-bold text-white">${o.id}</h4>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-[10px] font-black uppercase tracking-widest text-slate-500">สั่งเมื่อ</span>
+                            <div class="text-sm text-slate-300 font-medium">${o.time}</div>
+                        </div>
+                    </div>
+                    <div class="space-y-2 mb-8 bg-slate-900/30 p-3 rounded-xl border border-white/5">
+                        ${o.items.map(it => `
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm font-medium text-slate-200">${it.name}</span>
+                                <span class="text-xs font-black bg-slate-800 text-slate-300 px-2 py-0.5 rounded">x${it.qty}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <button onclick="done(${idx})" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 py-3.5 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all transform active:scale-95 shadow-[0_0_20px_rgba(16,185,129,0.2)]">
+                        <span class="material-symbols-outlined">check_circle</span>
+                        ทำรายการเสร็จสิ้น
                     </button>
                 </div>`).join('');
-
-            // โหลดคิวครัว
-            const orders = JSON.parse(localStorage.getItem('kitchenOrders')) || [];
-            document.getElementById('q-count').innerText = orders.length;
-            
-            const kitchenDisplay = document.getElementById('kitchen-display');
-            if (orders.length === 0) {
-                kitchenDisplay.innerHTML = '<div class="custom-glass p-8 rounded-3xl text-center text-slate-500">ยังไม่มีออเดอร์เข้ามา</div>';
-            } else {
-                kitchenDisplay.innerHTML = orders.map((o, idx) => `
-                    <div class="custom-glass p-6 rounded-3xl soft-shadow border-l-4 border-l-[var(--accent-secondary)] animate-pulse">
-                        <div class="flex justify-between items-start mb-4">
-                            <div>
-                                <span class="text-[10px] font-black uppercase tracking-widest text-[var(--accent-secondary)]">รหัสออเดอร์</span>
-                                <h4 class="text-2xl font-bold text-white">${o.id}</h4>
-                            </div>
-                            <div class="text-right bg-slate-800/50 px-3 py-1 rounded-lg">
-                                <span class="text-xs text-slate-400">${o.time}</span>
-                            </div>
-                        </div>
-                        <div class="space-y-2 mb-6 bg-slate-900/30 p-4 rounded-xl border border-white/5">
-                            ${o.items.map(it => `
-                                <div class="flex justify-between items-center border-b border-white/5 pb-2 last:border-0 last:pb-0">
-                                    <span class="text-sm font-medium text-slate-200">${it.name}</span>
-                                    <span class="text-xs font-black bg-[var(--accent-primary)] text-white px-2 py-0.5 rounded">x${it.qty}</span>
-                                </div>
-                            `).join('')}
-                            <div class="pt-2 mt-2 border-t border-white/10 flex justify-between text-sm font-bold text-slate-400">
-                                <span>รวมเงิน</span>
-                                <span class="text-emerald-400">฿${o.total}</span>
-                            </div>
-                        </div>
-                        <button onclick="done(${idx})" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 py-3.5 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all transform active:scale-[0.99] shadow-[0_0_20px_rgba(16,185,129,0.2)]">
-                            <span class="material-symbols-outlined">check_circle</span>
-                            ทำรายการเสร็จสิ้น
-                        </button>
-                    </div>`).join('');
-            }
         }
+    }
 
-        function done(idx) {
-            if(!confirm('ยืนยันว่าทำออเดอร์นี้เสร็จแล้ว?')) return;
-            
-            let orders = JSON.parse(localStorage.getItem('kitchenOrders')) || [];
-            let completed = JSON.parse(localStorage.getItem('completedOrders')) || [];
-            
-            // ย้ายไป Completed
-            completed.push(orders.splice(idx, 1)[0]);
-            
-            localStorage.setItem('kitchenOrders', JSON.stringify(orders));
-            localStorage.setItem('completedOrders', JSON.stringify(completed));
-            loadAdmin();
-        }
-
-        // โหลดข้อมูลทุก 2 วินาที เพื่อให้เห็นออเดอร์ใหม่ทันทีโดยไม่ต้องรีเฟรช
-        setInterval(loadAdmin, 2000);
+    function done(idx) {
+        let orders = JSON.parse(localStorage.getItem('kitchenOrders')) || [];
+        let completed = JSON.parse(localStorage.getItem('completedOrders')) || [];
+        
+        completed.push(orders.splice(idx, 1)[0]);
+        localStorage.setItem('kitchenOrders', JSON.stringify(orders));
+        localStorage.setItem('completedOrders', JSON.stringify(completed));
         loadAdmin();
-    </script>
+    }
+
+    setInterval(loadAdmin, 2000); // อัปเดตอัตโนมัติทุก 2 วินาที
+    loadAdmin();
+</script>
 </body>
 </html>
