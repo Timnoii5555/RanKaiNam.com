@@ -1,173 +1,145 @@
 <!DOCTYPE html>
-<html lang="th"><head>
+<html lang="th">
+<head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>เมนูน้ำปั่นพรีเมียม</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <style type="text/tailwindcss">
-        :root {
-            --primary-mint: #48C9B0;
-            --glass-bg: rgba(255, 255, 255, 0.04);
-            --glass-border: rgba(255, 255, 255, 0.1);
-        }
-        body {
-            font-family: 'Kanit', sans-serif;
-            background-color: #0A0A0A;
-        }
-        .glass-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-        }
-        .glow-mint {
-            box-shadow: 0 10px 30px -5px rgba(72, 201, 176, 0.4);
-        }
-        .header-blur {
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-        }
-    </style>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
+    :root {
+        --primary-mint: #48C9B0;
+        --glass-bg: rgba(255, 255, 255, 0.04);
+        --glass-border: rgba(255, 255, 255, 0.1);
     }
-  </style>
-<style>
     body {
-      min-height: max(884px, 100dvh);
+        font-family: 'Kanit', sans-serif;
+        background-color: #0A0A0A;
+        min-height: 100vh;
     }
-  </style>
-  </head>
-<body class="text-white max-w-md mx-auto min-h-screen relative">
-<header class="p-6 flex justify-between items-center sticky top-0 z-50 bg-[#0A0A0A]/70 header-blur">
-<div class="flex flex-col">
-<span class="text-xs font-medium text-[var(--primary-mint)] uppercase tracking-wider">ร้านน้ำปั่น</span>
-<h1 class="text-2xl font-semibold tracking-tight">ร้านขายน้ำ</h1>
-</div>
-<div class="flex items-center gap-4">
-<a class="material-symbols-outlined text-gray-400 hover:text-white transition-colors" href="admin.html">settings</a>
-<div class="w-10 h-10 rounded-full border border-white/10 p-0.5 overflow-hidden">
-<img alt="Profile" class="w-full h-full object-cover rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXXwNJCDgnGLQy8eFgT3v_RCEvIUfn9rCOqEZqGwaQpTKTaoM3YYrWns5tpy-7GMoJdF7N3PxFIVxPRv3bpmAwX4XwDo7s7zKZDQJi4NtZzLleEyMo7tFIa7GT63AaZWMaWsWcbtIvoAtqkzTUFV9Hqqr83o_L6lH1YBmfRv0xULpii6kmbavFUghanOhoN_yv69RSFMGVMAYUZd5uPOIY-HZY1KisdcPdikx35uS3tpYa_qHfcIko2xD8s4QLtvYOzBbHcisMImI"/>
-</div>
-</div>
-</header>
-<div class="px-6 mb-6 flex gap-3 overflow-x-auto no-scrollbar">
-<span class="px-5 py-2 bg-[var(--primary-mint)] text-black rounded-full text-sm font-semibold whitespace-nowrap">ทั้งหมด</span>
-<span class="px-5 py-2 glass-card rounded-full text-sm font-medium text-gray-400 whitespace-nowrap">น้ำปั่น</span>
-<span class="px-5 py-2 glass-card rounded-full text-sm font-medium text-gray-400 whitespace-nowrap">น้ำผลไม้</span>
-</div>
-<main class="px-6 grid grid-cols-2 gap-5 pb-36" id="menu-grid">
-<div class="glass-card p-3 rounded-[2rem] flex flex-col group">
-<div class="relative mb-3">
-<img class="rounded-[1.5rem] w-full aspect-square object-cover shadow-2xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJns5kXl3vLMOP8Ab9K2NUHIsp7u9yxeR0iAuulsN1hTamQQqwatygQBKE6wf-Iyac9QhbGg8f0YpruACnZfCY4SYpGxyBauyur1BzTqV6hUvdrN3Op00Hvx0F3LffuJOddEe0-zA8CNESNgILIUJy5Z8a_WQSloyC0datTGM6MvVAzjya2lrmnSQNxetQH3ffRwtQ79ORoQ8idJoakvIoG0cyEz-2It5jW7KWZlDAI6UyWo7CMwkIqygRwNQSJxQTAlcnM0Ox75s"/>
-<button class="absolute bottom-2 right-2 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-full w-10 h-10 flex items-center justify-center hover:bg-[var(--primary-mint)] hover:text-black transition-all">
-<span class="material-symbols-outlined text-[20px]">add</span>
-</button>
-</div>
-<div class="px-1">
-<h3 class="font-medium text-sm text-gray-100 line-clamp-1">เบอร์รี่รวมพรีเมียม</h3>
-<span class="text-[var(--primary-mint)] font-semibold mt-1 block">฿ 120</span>
-</div>
-</div>
-<div class="glass-card p-3 rounded-[2rem] flex flex-col group">
-<div class="relative mb-3">
-<img class="rounded-[1.5rem] w-full aspect-square object-cover shadow-2xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGW-xb08hg774EewTqJjODhA0LddeKZ_hvqoCJQjsWPuzIhQsjNvnJre15Sx4EV-KSgJULrk4UWl-On_zZeOhnLi0O5CEXPjXXuPFBR-iJCqYS_D34pGAYakILt2dld0WunVRnooU98eHz2aRJ7-L7mAPd9h4St_PSSk0zQPLTRXgKSGFvYt9rHDZkhJqQn7cdauj2GnUf_bJaPciMBhajsVXsxJfBi5_cn0NUhUUDDEWG2YTaX5fSaQpCvMYg70BC6zbRhQmPecU"/>
-<button class="absolute bottom-2 right-2 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-full w-10 h-10 flex items-center justify-center hover:bg-[var(--primary-mint)] hover:text-black transition-all">
-<span class="material-symbols-outlined text-[20px]">add</span>
-</button>
-</div>
-<div class="px-1">
-<h3 class="font-medium text-sm text-gray-100 line-clamp-1">มะม่วงปั่น</h3>
-<span class="text-[var(--primary-mint)] font-semibold mt-1 block">฿ 95</span>
-</div>
-</div>
-<div class="glass-card p-3 rounded-[2rem] flex flex-col group">
-<div class="relative mb-3">
-<img class="rounded-[1.5rem] w-full aspect-square object-cover shadow-2xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAi54kt0oEnSwEUS97D3-iNhMqPU93cla4uDdwbJn9xonNbztHhdUcYVqG9G63v1kt_BG3Vl8NV4Lf1_ly7TNyQ1Zcrvre_Rjuv1SHYPRU9z-NOjtnM_KKlZ2hNFXfpOkbS7YvZJ3nQm_Vwh82_zb3G4-D0SS9lZrW8eBI_MWr6whZcpOUGM15-h7RvVwnU3n8CDgp1_ZiImIEIYHwC2WFPkNfktBwepYnzNOrlt62xZ8_ySga13_Wn_heNsUKR5spPrvmSaLe1qPk"/>
-<button class="absolute bottom-2 right-2 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-full w-10 h-10 flex items-center justify-center hover:bg-[var(--primary-mint)] hover:text-black transition-all">
-<span class="material-symbols-outlined text-[20px]">add</span>
-</button>
-</div>
-<div class="px-1">
-<h3 class="font-medium text-sm text-gray-100 line-clamp-1">กรีนดีท็อกซ์</h3>
-<span class="text-[var(--primary-mint)] font-semibold mt-1 block">฿ 110</span>
-</div>
-</div>
-<div class="glass-card p-3 rounded-[2rem] flex flex-col group">
-<div class="relative mb-3">
-<img class="rounded-[1.5rem] w-full aspect-square object-cover shadow-2xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcIA_qj7bsTXwZRA3Br33A2fdpHhFSWK-R-eoXcFA34MdyA1gp_Qq0j_eijfQKVa9J7kBL37x71JPjouhBpGTLAWi1h4c787ktqTy-6NMUeeD7kS75-WxO5924glNGolbMK6w_Tt3XJT9xE-eelniIyGi8gg2tSrWNjKG1vUfVtWRzNuA9aW_kGlihy-xP3s1G5163Oj9xsPbVaVI0ZN2GUbXBDubipEiBF_bgNwmPsvMqmu2HM0PjQ3_acBPhEWbjIcP9OvehatM"/>
-<button class="absolute bottom-2 right-2 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-full w-10 h-10 flex items-center justify-center hover:bg-[var(--primary-mint)] hover:text-black transition-all">
-<span class="material-symbols-outlined text-[20px]">add</span>
-</button>
-</div>
-<div class="px-1">
-<h3 class="font-medium text-sm text-gray-100 line-clamp-1">โปรตีนพาวเวอร์</h3>
-<span class="text-[var(--primary-mint)] font-semibold mt-1 block">฿ 145</span>
-</div>
-</div>
-</main>
-<div class="fixed bottom-8 left-0 right-0 px-6 z-50">
-<a class="bg-[var(--primary-mint)] glow-mint h-16 rounded-full flex items-center justify-between px-6 text-black font-bold shadow-2xl transition-transform active:scale-95 overflow-hidden relative" href="basket.html">
-<div class="flex items-center gap-3">
-<div class="bg-black/10 w-8 h-8 rounded-full flex items-center justify-center relative">
-<span class="material-symbols-outlined text-[20px]">shopping_bag</span>
-<span class="absolute -top-1 -right-1 bg-black text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full border border-[var(--primary-mint)]" id="cart-count">2</span>
-</div>
-<span class="font-semibold text-sm">ดูตะกร้าสินค้า</span>
-</div>
-<div class="flex flex-col items-end leading-tight">
-<span class="text-lg" id="cart-total">฿ 230.00</span>
-<span class="text-[10px] uppercase opacity-60">รวมภาษีแล้ว</span>
-</div>
-</a>
-</div>
-<script>
+    .glass-card {
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--glass-border);
+    }
+    .glow-mint {
+        box-shadow: 0 10px 30px -5px rgba(72, 201, 176, 0.4);
+    }
+    .header-blur {
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+    }
+</style>
+</head>
+<body class="text-white max-w-md mx-auto min-h-screen relative pb-36">
+    <header class="p-6 flex justify-between items-center sticky top-0 z-50 bg-[#0A0A0A]/70 header-blur">
+        <div class="flex flex-col">
+            <span class="text-xs font-medium text-[var(--primary-mint)] uppercase tracking-wider">ร้านน้ำปั่น</span>
+            <h1 class="text-2xl font-semibold tracking-tight">RanKaiNam</h1>
+        </div>
+        <div class="flex items-center gap-4">
+            <a class="material-symbols-outlined text-gray-400 hover:text-white transition-colors" href="admin.html">settings</a>
+            <div class="w-10 h-10 rounded-full border border-white/10 p-0.5 overflow-hidden">
+                <img alt="Profile" class="w-full h-full object-cover rounded-full" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100"/>
+            </div>
+        </div>
+    </header>
+
+    <div class="px-6 mb-6 flex gap-3 overflow-x-auto no-scrollbar">
+        <span class="px-5 py-2 bg-[var(--primary-mint)] text-black rounded-full text-sm font-semibold whitespace-nowrap cursor-pointer">ทั้งหมด</span>
+        <span class="px-5 py-2 glass-card rounded-full text-sm font-medium text-gray-400 whitespace-nowrap cursor-pointer">น้ำปั่น</span>
+        <span class="px-5 py-2 glass-card rounded-full text-sm font-medium text-gray-400 whitespace-nowrap cursor-pointer">น้ำผลไม้</span>
+    </div>
+
+    <main class="px-6 grid grid-cols-2 gap-5" id="menu-grid">
+        </main>
+
+    <div class="fixed bottom-8 left-0 right-0 px-6 z-50" id="cart-bar" style="display: none;">
+        <a class="bg-[var(--primary-mint)] glow-mint h-16 rounded-full flex items-center justify-between px-6 text-black font-bold shadow-2xl transition-transform active:scale-95 overflow-hidden relative" href="basket.html">
+            <div class="flex items-center gap-3">
+                <div class="bg-black/10 w-8 h-8 rounded-full flex items-center justify-center relative">
+                    <span class="material-symbols-outlined text-[20px]">shopping_bag</span>
+                    <span class="absolute -top-1 -right-1 bg-black text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full border border-[var(--primary-mint)]" id="cart-count">0</span>
+                </div>
+                <span class="font-semibold text-sm">ดูตะกร้าสินค้า</span>
+            </div>
+            <div class="flex flex-col items-end leading-tight">
+                <span class="text-lg" id="cart-total">฿ 0.00</span>
+                <span class="text-[10px] uppercase opacity-60">รวมภาษีแล้ว</span>
+            </div>
+        </a>
+    </div>
+
+    <script>
+        // ข้อมูลเริ่มต้น (ถ้าไม่มีใน Admin จะโชว์อันนี้)
+        const defaultMenus = [
+            { name: "เบอร์รี่รวมพรีเมียม", price: 120, image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400" },
+            { name: "มะม่วงปั่น", price: 95, image: "https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?w=400" },
+            { name: "กรีนดีท็อกซ์", price: 110, image: "https://images.unsplash.com/photo-1610970881699-44a5587cabec?w=400" },
+            { name: "โปรตีนพาวเวอร์", price: 145, image: "https://images.unsplash.com/photo-1577805947697-89e18249d767?w=400" }
+        ];
+
+        function init() {
+            // เช็คว่ามีเมนูในระบบหรือยัง ถ้าไม่มีให้ใช้เมนูเริ่มต้น
+            if (!localStorage.getItem('myMenus')) {
+                localStorage.setItem('myMenus', JSON.stringify(defaultMenus));
+            }
+            loadMenus();
+            updateUI();
+        }
+
         function loadMenus() {
             const menus = JSON.parse(localStorage.getItem('myMenus')) || [];
             const menuGrid = document.getElementById('menu-grid');
-            // If there's real data, replace the placeholders
-            if (menus.length > 0) {
-                menuGrid.innerHTML = menus.map(m => `
-                    <div class="glass-card p-3 rounded-[2rem] flex flex-col">
-                        <div class="relative mb-3">
-                            <img src="${m.image}" class="rounded-[1.5rem] w-full aspect-square object-cover shadow-2xl">
-                            <button onclick="add('${m.name}', ${m.price}, '${m.image}')" class="absolute bottom-2 right-2 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-full w-10 h-10 flex items-center justify-center hover:bg-[var(--primary-mint)] hover:text-black transition-all">
-                                <span class="material-symbols-outlined text-[20px]">add</span>
-                            </button>
-                        </div>
-                        <div class="px-1">
-                            <h3 class="font-medium text-sm text-gray-100 line-clamp-1">${m.name}</h3>
-                            <span class="text-[var(--primary-mint)] font-semibold mt-1 block">฿ ${m.price}</span>
-                        </div>
-                    </div>`).join('');
-            }
-            updateUI();
+            
+            menuGrid.innerHTML = menus.map(m => `
+                <div class="glass-card p-3 rounded-[2rem] flex flex-col group relative overflow-hidden">
+                    <div class="relative mb-3">
+                        <img class="rounded-[1.5rem] w-full aspect-square object-cover shadow-2xl" src="${m.image}">
+                        <button onclick="addToCart('${m.name}', ${m.price}, '${m.image}')" class="absolute bottom-2 right-2 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-full w-10 h-10 flex items-center justify-center hover:bg-[var(--primary-mint)] hover:text-black transition-all active:scale-90">
+                            <span class="material-symbols-outlined text-[20px]">add</span>
+                        </button>
+                    </div>
+                    <div class="px-1">
+                        <h3 class="font-medium text-sm text-gray-100 line-clamp-1">${m.name}</h3>
+                        <span class="text-[var(--primary-mint)] font-semibold mt-1 block">฿ ${m.price}</span>
+                    </div>
+                </div>`).join('');
         }
-        function add(n, p, i) {
+
+        function addToCart(name, price, image) {
             let cart = JSON.parse(localStorage.getItem('cartData')) || [];
-            let f = cart.find(x => x.name === n);
-            if(f) f.qty++; else cart.push({name:n, price:p, image:i, qty:1});
+            let found = cart.find(x => x.name === name);
+            if(found) found.qty++; 
+            else cart.push({name, price, image, qty:1});
+            
             localStorage.setItem('cartData', JSON.stringify(cart));
+            
+            // เอฟเฟกต์สั่นปุ่ม (Visual feedback)
             updateUI();
         }
+
         function updateUI() {
             let cart = JSON.parse(localStorage.getItem('cartData')) || [];
             const count = cart.reduce((s,x)=>s+x.qty, 0);
             const total = cart.reduce((s,x)=>s+(x.price*x.qty), 0);
+            
             document.getElementById('cart-count').innerText = count;
             document.getElementById('cart-total').innerText = '฿ ' + total.toLocaleString(undefined, {minimumFractionDigits: 2});
-            // Auto hide/show cart with a simple opacity (since no animations allowed, just standard update)
-            const cartBar = document.querySelector('.fixed.bottom-8');
-            if (count === 0) {
-                cartBar.style.display = 'none';
-            } else {
+            
+            const cartBar = document.getElementById('cart-bar');
+            if (count > 0) {
                 cartBar.style.display = 'block';
+                cartBar.classList.add('animate-bounce'); // เพิ่ม animation เล็กน้อย
+                setTimeout(() => cartBar.classList.remove('animate-bounce'), 500);
+            } else {
+                cartBar.style.display = 'none';
             }
         }
-        loadMenus();
-    </script>
 
-</body></html>
+        init();
+    </script>
+</body>
+</html>
