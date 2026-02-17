@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>จัดการเมนู - RanKaiNam</title>
+    <title>จัดการร้าน - RanKaiNam</title>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -19,110 +19,84 @@
         }
     </script>
 </head>
-<body class="bg-background-dark text-white font-display min-h-screen p-6">
-    <div class="max-w-md mx-auto">
-        <div class="flex items-center justify-between mb-8">
-            <h1 class="text-2xl font-bold">จัดการเมนูร้าน 🛠️</h1>
-            <a href="index.html" class="text-gray-400 hover:text-white">กลับหน้าร้าน</a>
-        </div>
+<body class="bg-background-dark text-white font-display p-6">
+    <div class="max-w-4xl mx-auto">
+        <header class="flex justify-between items-center mb-10">
+            <h1 class="text-3xl font-bold flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">settings</span> จัดการร้าน (Admin)
+            </h1>
+            <a href="index.html" class="bg-red-500/10 text-red-400 px-4 py-2 rounded-lg font-bold">ออกจากระบบ</a>
+        </header>
 
-        <div class="bg-surface-dark p-6 rounded-2xl border border-white/10 shadow-lg">
-            <h2 class="text-lg font-bold text-primary mb-4">เพิ่มเมนูใหม่</h2>
-            
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-sm text-gray-400 mb-1">ชื่อเมนู</label>
-                    <input type="text" id="menuName" placeholder="เช่น แตงโมปั่น" class="w-full bg-black/30 rounded-lg border-white/10 text-white focus:ring-primary focus:border-primary">
-                </div>
-                
-                <div>
-                    <label class="block text-sm text-gray-400 mb-1">ราคา (บาท)</label>
-                    <input type="number" id="menuPrice" placeholder="เช่น 50" class="w-full bg-black/30 rounded-lg border-white/10 text-white focus:ring-primary focus:border-primary">
-                </div>
-
-                <div>
-                    <label class="block text-sm text-gray-400 mb-1">ลิงก์รูปภาพ (URL)</label>
-                    <input type="text" id="menuImage" placeholder="วางลิงก์รูปภาพจากเน็ต..." class="w-full bg-black/30 rounded-lg border-white/10 text-white focus:ring-primary focus:border-primary">
-                    <p class="text-xs text-gray-500 mt-1">*คลิกขวาที่รูปใน Google > Copy Image Address มาวาง</p>
-                </div>
-
-                <button onclick="addNewMenu()" class="w-full bg-primary text-black font-bold py-3 rounded-xl hover:bg-green-400 transition-colors mt-2">
-                    + บันทึกเมนู
-                </button>
+        <section>
+            <div class="flex items-center gap-3 mb-6">
+                <span class="text-3xl">🔥</span>
+                <h2 class="text-2xl font-bold">สถานะครัว: <span id="order-count" class="text-primary">0</span> ออเดอร์</h2>
             </div>
-        </div>
 
-        <div class="mt-8">
-            <h3 class="text-lg font-bold mb-4">เมนูที่เพิ่มล่าสุด</h3>
-            <div id="admin-list" class="space-y-3">
+            <button onclick="loadKitchen()" class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded-xl font-bold flex items-center gap-2 mb-8 shadow-lg shadow-blue-900/20 transition-all">
+                <span class="material-symbols-outlined">refresh</span> รีเฟรชออเดอร์
+            </button>
+
+            <div id="kitchen-display" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 </div>
-            <button onclick="clearAllData()" class="mt-6 text-red-400 text-sm underline w-full text-center">ล้างข้อมูลเมนูที่เพิ่มเองทั้งหมด</button>
-        </div>
+        </section>
     </div>
 
     <script>
-        // โหลดข้อมูลเก่ามาแสดงทันทีที่เข้าหน้าเว็บ
-        renderAdminList();
+        function loadKitchen() {
+            const display = document.getElementById('kitchen-display');
+            const orders = JSON.parse(localStorage.getItem('kitchenOrders')) || [];
+            
+            document.getElementById('order-count').innerText = orders.length;
 
-        function addNewMenu() {
-            // 1. ดึงค่าจากช่องกรอก
-            const name = document.getElementById('menuName').value;
-            const price = document.getElementById('menuPrice').value;
-            const image = document.getElementById('menuImage').value || 'https://images.unsplash.com/photo-1610970881699-44a5587cabec?q=80&w=600'; // รูปสำรอง
-
-            if(!name || !price) {
-                alert('กรุณากรอกชื่อและราคา');
+            if (orders.length === 0) {
+                display.innerHTML = `<div class="col-span-full py-10 bg-green-500/10 border border-green-500/20 text-green-500 rounded-2xl text-center font-bold">ไม่มีออเดอร์ค้าง</div>`;
                 return;
             }
 
-            // 2. สร้างออบเจกต์เมนู
-            const newMenu = { name, price, image };
-
-            // 3. บันทึกลง Local Storage
-            let menus = JSON.parse(localStorage.getItem('myMenus')) || [];
-            menus.push(newMenu);
-            localStorage.setItem('myMenus', JSON.stringify(menus));
-
-            // 4. เคลียร์ช่องและรีเฟรชรายการ
-            document.getElementById('menuName').value = '';
-            document.getElementById('menuPrice').value = '';
-            document.getElementById('menuImage').value = '';
-            alert('บันทึกสำเร็จ!');
-            renderAdminList();
-        }
-
-        function renderAdminList() {
-            const list = document.getElementById('admin-list');
-            list.innerHTML = '';
-            const menus = JSON.parse(localStorage.getItem('myMenus')) || [];
-
-            menus.forEach((menu, index) => {
-                list.innerHTML += `
-                    <div class="flex items-center gap-3 bg-surface-dark p-3 rounded-xl border border-white/5">
-                        <img src="${menu.image}" class="w-12 h-12 rounded-lg object-cover">
-                        <div class="flex-1">
-                            <h4 class="font-bold text-white">${menu.name}</h4>
-                            <p class="text-primary text-sm">฿ ${menu.price}</p>
+            display.innerHTML = '';
+            orders.forEach((order, index) => {
+                // สร้างรายการสินค้าจริงจากออเดอร์
+                const itemsHTML = order.items.map(item => `
+                    <div class="flex justify-between py-2 border-b border-white/5 last:border-0">
+                        <div class="flex gap-3">
+                            <span class="font-bold text-primary">${item.qty}x</span>
+                            <div>
+                                <p class="font-bold text-sm">${item.name}</p>
+                                <p class="text-[10px] text-gray-500">${item.detail}</p>
+                            </div>
                         </div>
-                        <button onclick="deleteMenu(${index})" class="text-red-400 hover:text-red-300">ลบ</button>
+                    </div>
+                `).join('');
+
+                display.innerHTML += `
+                    <div class="bg-surface-dark border border-white/10 rounded-2xl p-5 shadow-xl">
+                        <div class="flex justify-between border-b border-white/10 pb-3 mb-3">
+                            <span class="bg-primary text-black px-2 py-1 rounded text-xs font-bold">${order.table}</span>
+                            <span class="text-xs text-gray-500">${order.time} | #${order.id}</span>
+                        </div>
+                        <div class="min-h-[80px]">${itemsHTML}</div>
+                        <div class="mt-4 pt-3 border-t border-white/10 flex justify-between items-center">
+                            <span class="font-bold text-sm">รวม ฿${order.total}</span>
+                            <button onclick="finishOrder(${index})" class="bg-green-600 hover:bg-green-500 text-white px-6 py-2 rounded-xl font-bold text-sm transition-colors">เสร็จสิ้น</button>
+                        </div>
                     </div>
                 `;
             });
         }
 
-        function deleteMenu(index) {
-            let menus = JSON.parse(localStorage.getItem('myMenus')) || [];
-            menus.splice(index, 1);
-            localStorage.setItem('myMenus', JSON.stringify(menus));
-            renderAdminList();
-        }
-
-        function clearAllData() {
-            if(confirm('ยืนยันลบเมนูที่เพิ่มเองทั้งหมด?')) {
-                localStorage.removeItem('myMenus');
-                renderAdminList();
+        function finishOrder(index) {
+            let orders = JSON.parse(localStorage.getItem('kitchenOrders')) || [];
+            if(confirm('ทำออเดอร์นี้เสร็จแล้วใช่ไหม?')) {
+                orders.splice(index, 1);
+                localStorage.setItem('kitchenOrders', JSON.stringify(orders));
+                loadKitchen();
             }
         }
+
+        // โหลดข้อมูลครั้งแรก
+        loadKitchen();
     </script>
 </body>
 </html>
