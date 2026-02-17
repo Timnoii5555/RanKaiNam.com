@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html class="dark" lang="th">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Premium Admin Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ec6d",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#121212",
+                        "surface-dark": "#1E1E1E",
+                        "input-dark": "#2C2C2C",
+                    },
+                    fontFamily: {"display": ["Kanit", "Plus Jakarta Sans", "sans-serif"],
+                        "sans": ["Kanit", "Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+    body { min-height: max(884px, 100dvh); }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+</style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white antialiased selection:bg-primary/30 selection:text-white">
+<div class="relative flex min-h-screen w-full flex-col overflow-hidden items-center justify-center p-4">
+<div class="absolute top-[-20%] left-[-10%] h-[500px] w-[500px] rounded-full bg-primary/5 blur-[120px] pointer-events-none"></div>
+<div class="absolute bottom-[-10%] right-[-5%] h-[400px] w-[400px] rounded-full bg-primary/5 blur-[100px] pointer-events-none"></div>
+<div class="flex w-full max-w-[400px] flex-col gap-8 z-10">
+<div class="flex flex-col items-center gap-6 pt-10 pb-4">
+<div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-surface-dark/50 border border-white/5 shadow-xl backdrop-blur-sm">
+<span class="material-symbols-outlined text-4xl text-primary">security</span>
+</div>
+<div class="text-center space-y-2">
+<h1 class="text-[32px] font-bold tracking-tight text-white leading-tight">
+                        ผู้ดูแลระบบ
+                    </h1>
+<p class="text-white/40 text-sm font-medium tracking-wide uppercase font-sans">Secure Access Portal</p>
+</div>
+</div>
+<div class="flex flex-col gap-5 w-full">
+<div class="group relative">
+<label class="block text-base font-medium text-white/80 mb-2 pl-1" for="username">ชื่อผู้ใช้งาน</label>
+<div class="relative flex items-center">
+<span class="absolute left-4 text-white/40 group-focus-within:text-primary transition-colors duration-300">
+<span class="material-symbols-outlined text-[20px]">person</span>
+</span>
+<input class="form-input block w-full rounded-lg border-0 bg-input-dark py-4 pl-12 pr-4 text-white placeholder:text-white/20 focus:ring-2 focus:ring-primary/50 focus:bg-[#333] transition-all duration-300 text-base shadow-inner font-light" id="username" placeholder="กรอกชื่อผู้ใช้งาน" type="text"/>
+</div>
+</div>
+<div class="group relative">
+<label class="block text-base font-medium text-white/80 mb-2 pl-1" for="password">รหัสผ่าน</label>
+<div class="relative flex items-center">
+<span class="absolute left-4 text-white/40 group-focus-within:text-primary transition-colors duration-300">
+<span class="material-symbols-outlined text-[20px]">lock</span>
+</span>
+<input class="form-input block w-full rounded-lg border-0 bg-input-dark py-4 pl-12 pr-4 text-white placeholder:text-white/20 focus:ring-2 focus:ring-primary/50 focus:bg-[#333] transition-all duration-300 text-base shadow-inner font-light" id="password" placeholder="••••••••" type="password"/>
+<button class="absolute right-4 text-white/30 hover:text-white transition-colors" onclick="togglePass()">
+<span class="material-symbols-outlined text-[20px]" id="eye-icon">visibility_off</span>
+</button>
+</div>
+</div>
+<div class="h-4"></div>
+<button onclick="handleLogin()" class="group relative flex w-full items-center justify-center overflow-hidden rounded-lg bg-primary py-4 px-6 text-background-dark font-bold text-lg shadow-[0_0_20px_rgba(19,236,109,0.3)] hover:shadow-[0_0_30px_rgba(19,236,109,0.5)] transition-all duration-300 active:scale-[0.98]">
+<span class="relative z-10 flex items-center gap-2 tracking-wide">
+                        ขอรับรหัส OTP
+                        <span class="material-symbols-outlined text-[20px] transition-transform group-hover:translate-x-1 font-bold">arrow_forward</span>
+</span>
+<div class="absolute inset-0 z-0 bg-white/20 opacity-0 transition-opacity group-hover:opacity-100"></div>
+</button>
+</div>
+<div class="mt-auto pt-8 flex flex-col items-center gap-4 opacity-30">
+<div class="h-1 w-12 rounded-full bg-white/20"></div>
+<p class="text-[10px] tracking-widest uppercase font-semibold font-sans">v2.0 Admin Secure System</p>
+</div>
+</div>
+</div>
+
+<script>
+    function togglePass() {
+        const p = document.getElementById('password');
+        const icon = document.getElementById('eye-icon');
+        if (p.type === 'password') { p.type = 'text'; icon.innerText = 'visibility'; }
+        else { p.type = 'password'; icon.innerText = 'visibility_off'; }
+    }
+
+    function handleLogin() {
+        const pass = document.getElementById('password').value;
+        if (pass === '090090op') {
+            window.location.href = 'login-otp.html';
+        } else {
+            alert('รหัสผ่านไม่ถูกต้อง');
+        }
+    }
+</script>
+</body>
+</html>

@@ -42,7 +42,7 @@
             <h1 class="text-2xl font-semibold tracking-tight">RanKaiNam</h1>
         </div>
         <div class="flex items-center gap-4">
-            <a class="material-symbols-outlined text-gray-400 hover:text-white transition-colors" href="admin.html">settings</a>
+            <a class="material-symbols-outlined text-gray-400 hover:text-white transition-colors" href="login.html">settings</a>
             <div class="w-10 h-10 rounded-full border border-white/10 p-0.5 overflow-hidden">
                 <img alt="Profile" class="w-full h-full object-cover rounded-full" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100"/>
             </div>
@@ -74,22 +74,17 @@
 
         function loadData() {
             const menus = JSON.parse(localStorage.getItem('myMenus')) || [];
-            
-            // 1. สร้างหมวดหมู่ (ดึงเฉพาะที่ไม่ซ้ำกัน)
             const categories = ['ทั้งหมด', ...new Set(menus.map(m => m.category || 'ทั่วไป'))];
             
             const catList = document.getElementById('category-list');
             catList.innerHTML = categories.map(cat => `
-                <span onclick="filterMenu('${cat}')" 
-                      class="px-5 py-2 rounded-full text-sm font-medium whitespace-nowrap cursor-pointer transition-colors ${cat === currentFilter ? 'bg-[var(--primary-mint)] text-black font-semibold' : 'glass-card text-gray-400'}">
+                <button onclick="filterMenu('${cat}')" 
+                      class="px-5 py-2 rounded-full text-sm font-medium whitespace-nowrap cursor-pointer transition-colors border border-transparent ${cat === currentFilter ? 'bg-[var(--primary-mint)] text-black font-semibold shadow-[0_0_15px_rgba(72,201,176,0.4)]' : 'glass-card text-gray-400 hover:border-white/20'}">
                     ${cat}
-                </span>
+                </button>
             `).join('');
 
-            // 2. เตรียมข้อมูลสินค้า (แนบ index เดิมไปด้วย เพื่อให้กดสั่งได้ถูกต้อง)
             const menusWithIndex = menus.map((m, originalIndex) => ({ ...m, originalIndex }));
-
-            // 3. กรองสินค้า
             const filteredMenus = currentFilter === 'ทั้งหมด' 
                 ? menusWithIndex 
                 : menusWithIndex.filter(m => (m.category || 'ทั่วไป') === currentFilter);
@@ -100,16 +95,19 @@
                 grid.innerHTML = '<p class="col-span-2 text-center text-gray-500 py-10">ยังไม่มีสินค้าในหมวดหมู่นี้</p>';
             } else {
                 grid.innerHTML = filteredMenus.map(m => `
-                    <div class="glass-card p-3 rounded-[2rem] flex flex-col group relative overflow-hidden">
+                    <div class="glass-card p-3 rounded-[2rem] flex flex-col group relative overflow-hidden transition-all hover:border-[var(--primary-mint)]/30">
                         <div class="relative mb-3">
-                            <img src="${m.image}" class="rounded-[1.5rem] w-full aspect-square object-cover shadow-2xl">
-                            <button onclick="addToCart(${m.originalIndex})" class="absolute bottom-2 right-2 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-full w-10 h-10 flex items-center justify-center hover:bg-[var(--primary-mint)] hover:text-black transition-all active:scale-90">
+                            <img src="${m.image}" class="rounded-[1.5rem] w-full aspect-square object-cover shadow-2xl bg-white/5">
+                            <button onclick="addToCart(${m.originalIndex})" class="absolute bottom-2 right-2 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-full w-10 h-10 flex items-center justify-center hover:bg-[var(--primary-mint)] hover:text-black transition-all active:scale-90 shadow-lg">
                                 <span class="material-symbols-outlined text-[20px]">add</span>
                             </button>
                         </div>
                         <div class="px-1">
                             <h3 class="font-medium text-sm text-gray-100 line-clamp-1">${m.name}</h3>
-                            <span class="text-[var(--primary-mint)] font-semibold mt-1 block">฿ ${m.price}</span>
+                            <div class="flex justify-between items-end mt-1">
+                                <span class="text-[var(--primary-mint)] font-semibold block">฿ ${m.price}</span>
+                                <span class="text-[10px] text-gray-500 bg-white/5 px-2 py-0.5 rounded-lg">${m.category || 'ทั่วไป'}</span>
+                            </div>
                         </div>
                     </div>`).join('');
             }
@@ -121,41 +119,31 @@
             loadData();
         }
 
-        // รับค่า index มาค้นหาข้อมูลใน localStorage แทนการรับค่าตรงๆ
         function addToCart(index) {
             const allMenus = JSON.parse(localStorage.getItem('myMenus')) || [];
-            const item = allMenus[index]; // ดึงข้อมูลสินค้าตัวจริง
+            const item = allMenus[index]; 
 
             if (!item) return;
 
             let cart = JSON.parse(localStorage.getItem('cartData')) || [];
-            
-            // เช็คว่ามีในตะกร้าหรือยัง
             let found = cart.find(x => x.name === item.name);
-            if(found) {
-                found.qty++; 
-            } else {
-                // บันทึกเฉพาะข้อมูลที่จำเป็น
-                cart.push({
-                    name: item.name, 
-                    price: item.price, 
-                    image: item.image, 
-                    qty: 1
-                });
-            }
+            if(found) found.qty++; 
+            else cart.push({ name: item.name, price: item.price, image: item.image, qty: 1 });
             
             localStorage.setItem('cartData', JSON.stringify(cart));
             updateCartUI();
+            
+            const bar = document.getElementById('cart-bar');
+            bar.classList.add('scale-105');
+            setTimeout(() => bar.classList.remove('scale-105'), 150);
         }
 
         function updateCartUI() {
             let cart = JSON.parse(localStorage.getItem('cartData')) || [];
             const count = cart.reduce((s,x)=>s+x.qty, 0);
             const total = cart.reduce((s,x)=>s+(x.price*x.qty), 0);
-            
             document.getElementById('cart-count').innerText = count;
             document.getElementById('cart-total').innerText = '฿ ' + total.toLocaleString(undefined, {minimumFractionDigits: 2});
-            
             const bar = document.getElementById('cart-bar');
             if (count > 0) bar.classList.remove('translate-y-full');
             else bar.classList.add('translate-y-full');

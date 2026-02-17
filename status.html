@@ -130,32 +130,27 @@
                 </div>
             `).join('');
 
-            // เริ่มต้นที่สถานะกำลังปั่น (Active Step 2)
             document.getElementById('progress-circle').style.strokeDashoffset = 276.46 * 0.7; // 30%
             document.getElementById('step-2-icon').classList.replace('bg-white/5', 'bg-[var(--mint-accent)]');
             document.getElementById('step-2-symbol').classList.replace('text-gray-400', 'text-black');
             document.getElementById('step-2-text').classList.remove('opacity-50');
 
-            // ตรวจสอบสถานะเสร็จสิ้น
             const timer = setInterval(() => {
                 const done = JSON.parse(localStorage.getItem('completedOrders')) || [];
                 if (done.some(o => o.id === current.id)) {
                     clearInterval(timer);
                     
-                    // UI เสร็จสิ้น
                     document.getElementById('progress-circle').style.strokeDashoffset = 0;
                     document.getElementById('progress-circle').classList.add('text-green-400');
                     document.getElementById('status-main').innerText = "100%";
                     document.getElementById('status-sub').innerText = "เสร็จสิ้น";
 
-                    // Update Timeline
                     document.getElementById('step-2-line').classList.replace('bg-white/10', 'bg-[var(--mint-accent)]');
                     document.getElementById('step-3-icon').classList.replace('bg-white/5', 'bg-[var(--mint-accent)]');
                     document.getElementById('step-3-symbol').innerText = "check";
                     document.getElementById('step-3-symbol').classList.replace('text-gray-600', 'text-black');
                     document.getElementById('step-3-text').classList.replace('text-gray-500', 'text-white');
 
-                    // Notifications
                     document.getElementById('ready-overlay').classList.remove('translate-y-full');
                     document.getElementById('alert-popup').style.transform = 'translate(-50%, 0)';
                     

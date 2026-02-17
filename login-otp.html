@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html class="dark" lang="th">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OTP Verification</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@200;300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13ec92",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#10221a",
+                        "surface-dark": "#162e24",
+                        "neutral-gray": "#889b94",
+                    },
+                    fontFamily: { "display": ["Kanit", "sans-serif"] },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body { min-height: max(884px, 100dvh); }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+</style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-gray-900 dark:text-white antialiased min-h-screen flex flex-col items-center justify-center p-0 m-0">
+<div class="w-full max-w-md h-screen flex flex-col bg-background-light dark:bg-background-dark relative overflow-hidden">
+<header class="flex items-center justify-between p-4 pt-12 pb-2 z-10">
+<a href="login.html" class="text-white p-2 rounded-full hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</a>
+<h1 class="text-white text-lg font-medium leading-tight tracking-wide">ยืนยันตัวตน</h1>
+<div class="w-10"></div> 
+</header>
+<main class="flex-1 flex flex-col px-6 pt-8 pb-6">
+<div class="flex justify-center mb-8">
+<div class="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl">lock_person</span>
+</div>
+</div>
+<div class="text-center mb-10">
+<h2 class="text-white text-3xl font-semibold leading-snug mb-4">กรอกรหัสยืนยันจาก<br/>เจ้าของร้าน</h2>
+<p class="text-neutral-gray text-base font-light leading-relaxed">
+    ระบบได้ส่งรหัส OTP ไปยังอีเมล <strong>pupe15625@gmail.com</strong> แล้ว กรุณาตรวจสอบและกรอกรหัส 6 หลักด้านล่าง
+</p>
+</div>
+<div class="flex justify-center mb-12">
+<fieldset class="flex gap-2 sm:gap-3">
+<input autocomplete="one-time-code" autofocus="" class="otp-input flex h-14 w-12 sm:h-16 sm:w-14 text-center rounded-xl bg-surface-dark border border-[#2a4539] focus:border-primary focus:ring-2 focus:ring-primary/50 text-white text-2xl font-medium transition-all duration-200 placeholder-transparent outline-none caret-primary" inputmode="numeric" maxlength="1" type="text"/>
+<input autocomplete="one-time-code" class="otp-input flex h-14 w-12 sm:h-16 sm:w-14 text-center rounded-xl bg-surface-dark border border-[#2a4539] focus:border-primary focus:ring-2 focus:ring-primary/50 text-white text-2xl font-medium transition-all duration-200 placeholder-transparent outline-none caret-primary" inputmode="numeric" maxlength="1" type="text"/>
+<input autocomplete="one-time-code" class="otp-input flex h-14 w-12 sm:h-16 sm:w-14 text-center rounded-xl bg-surface-dark border border-[#2a4539] focus:border-primary focus:ring-2 focus:ring-primary/50 text-white text-2xl font-medium transition-all duration-200 placeholder-transparent outline-none caret-primary" inputmode="numeric" maxlength="1" type="text"/>
+<input autocomplete="one-time-code" class="otp-input flex h-14 w-12 sm:h-16 sm:w-14 text-center rounded-xl bg-surface-dark border border-[#2a4539] focus:border-primary focus:ring-2 focus:ring-primary/50 text-white text-2xl font-medium transition-all duration-200 placeholder-transparent outline-none caret-primary" inputmode="numeric" maxlength="1" type="text"/>
+<input autocomplete="one-time-code" class="otp-input flex h-14 w-12 sm:h-16 sm:w-14 text-center rounded-xl bg-surface-dark border border-[#2a4539] focus:border-primary focus:ring-2 focus:ring-primary/50 text-white text-2xl font-medium transition-all duration-200 placeholder-transparent outline-none caret-primary" inputmode="numeric" maxlength="1" type="text"/>
+<input autocomplete="one-time-code" class="otp-input flex h-14 w-12 sm:h-16 sm:w-14 text-center rounded-xl bg-surface-dark border border-[#2a4539] focus:border-primary focus:ring-2 focus:ring-primary/50 text-white text-2xl font-medium transition-all duration-200 placeholder-transparent outline-none caret-primary" inputmode="numeric" maxlength="1" type="text"/>
+</fieldset>
+</div>
+<div class="text-center mb-auto">
+<button class="text-primary text-sm font-medium hover:text-white transition-colors flex items-center justify-center gap-1 mx-auto" onclick="alert('ส่งรหัสใหม่ไปยัง pupe15625@gmail.com แล้ว')">
+<span class="material-symbols-outlined text-sm">refresh</span>
+                    ส่งรหัสใหม่อีกครั้ง
+                 </button>
+</div>
+<div class="mt-4">
+<button onclick="verifyOTP()" class="w-full flex cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 px-5 bg-primary text-background-dark text-lg font-semibold leading-normal tracking-wide shadow-[0_0_20px_rgba(19,236,146,0.3)] hover:bg-[#0fdc85] hover:shadow-[0_0_25px_rgba(19,236,146,0.4)] transition-all active:scale-[0.98]">
+<span class="truncate">ยืนยันเพื่อเข้าระบบ</span>
+</button>
+</div>
+</main>
+<div class="h-6 w-full"></div>
+</div>
+<script>
+    const inputs = document.querySelectorAll('.otp-input');
+    inputs.forEach((input, index) => {
+        input.addEventListener('keydown', (e) => {
+            if (e.key >= '0' && e.key <= '9') {
+                input.value = '';
+                setTimeout(() => { if (index < inputs.length - 1) inputs[index + 1].focus(); }, 10);
+            } else if (e.key === 'Backspace') {
+                if (!input.value && index > 0) inputs[index - 1].focus();
+            }
+        });
+    });
+
+    function verifyOTP() {
+        // ให้ผ่านได้เลยเพื่อความสะดวกในการทดสอบ
+        window.location.href = 'admin.html';
+    }
+</script>
+</body>
+</html>
