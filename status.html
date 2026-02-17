@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Order Status</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: { "primary": "#00E676", "background-dark": "#121212", "card-dark": "#1E1E1E", "status-blending": "#FFB300", "status-ready": "#00FF88" },
+                    fontFamily: { "display": ["Plus Jakarta Sans", "sans-serif"] },
+                },
+            },
+        }
+    </script>
+    <style> body { min-height: 100vh; font-family: 'Plus Jakarta Sans', sans-serif; } </style>
+</head>
+<body class="bg-background-dark text-white antialiased">
+    <div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden max-w-md mx-auto bg-background-dark border-x border-white/5 shadow-2xl">
+        
+        <div class="sticky top-0 z-20 bg-background-dark/95 backdrop-blur-md border-b border-white/5 pb-4">
+            <div class="flex items-center justify-between px-5 pt-6 pb-4">
+                <a href="index.html" class="flex h-10 w-10 items-center justify-center rounded-full bg-white/5 text-white"><span class="material-symbols-outlined">home</span></a>
+                <div class="text-center">
+                    <p class="text-[10px] font-extrabold uppercase tracking-[0.2em] text-gray-500">Live Status</p>
+                    <h1 class="text-lg font-bold tracking-tight">Smoothie Station</h1>
+                </div>
+                <div class="flex h-10 w-10 items-center justify-center rounded-full bg-white/5 text-white"><span class="material-symbols-outlined text-status-ready">notifications_active</span></div>
+            </div>
+            
+            <div class="px-6 mt-2">
+                <div class="flex justify-between mb-3"><span class="text-[11px] font-bold text-status-ready uppercase">Order #402</span><span class="text-[11px] font-bold text-gray-500">EST. 4 MINS</span></div>
+                <div class="relative flex items-center justify-between">
+                    <div class="absolute top-1/2 left-0 w-full h-[2px] bg-white/10 -translate-y-1/2"></div>
+                    <div class="absolute top-1/2 left-0 w-1/2 h-[2px] bg-status-blending -translate-y-1/2"></div>
+                    <div class="relative flex flex-col items-center"><div class="h-4 w-4 rounded-full bg-status-ready border-4 border-background-dark"></div><span class="mt-2 text-[10px] font-bold text-status-ready">Received</span></div>
+                    <div class="relative flex flex-col items-center"><div class="h-4 w-4 rounded-full bg-status-blending border-4 border-background-dark ring-4 ring-status-blending/30"></div><span class="mt-2 text-[10px] font-bold text-status-blending">Blending</span></div>
+                    <div class="relative flex flex-col items-center"><div class="h-4 w-4 rounded-full bg-white/20 border-4 border-background-dark"></div><span class="mt-2 text-[10px] font-bold text-gray-600">Pickup</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-1 px-5 py-6 space-y-4 pb-32">
+            
+            <div class="flex items-center justify-between mb-2"><h3 class="text-xs font-bold uppercase text-gray-500 tracking-widest">Currently Blending</h3><span class="h-1.5 w-1.5 rounded-full bg-status-blending animate-pulse"></span></div>
+            <div class="group relative flex flex-col gap-4 rounded-2xl bg-card-dark p-4 border border-white/5 shadow-xl">
+                <div class="flex items-start justify-between">
+                    <div class="flex gap-4">
+                        <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-400 to-red-500 text-3xl shadow-lg">🥭</div>
+                        <div><h4 class="text-base font-extrabold text-white">Tropical Mango Blast</h4><p class="text-xs text-gray-400 mt-1">Extra Protein • No Honey</p></div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between border-t border-white/5 pt-3">
+                    <span class="text-[10px] font-medium text-gray-500">Started 2 mins ago</span>
+                    <div class="flex items-center gap-2 rounded-full bg-status-blending/10 px-4 py-1.5 text-status-blending border border-status-blending/20">
+                        <span class="material-symbols-outlined text-[18px] animate-spin">cyclone</span><span class="text-[11px] font-extrabold uppercase tracking-wider">Blending</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between mt-8 mb-2"><h3 class="text-xs font-bold uppercase text-gray-500 tracking-widest">Ready to Pick Up</h3></div>
+            <div class="group relative flex flex-col gap-4 rounded-2xl bg-card-dark p-4 border border-white/5 shadow-lg border-l-4 border-l-status-ready">
+                <div class="flex items-start justify-between">
+                    <div class="flex gap-4">
+                        <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-green-400 to-emerald-600 text-3xl shadow-lg">🥒</div>
+                        <div><h4 class="text-base font-extrabold text-white">Green Detox Glow</h4></div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between border-t border-white/5 pt-3">
+                    <span class="text-[10px] font-medium text-gray-500">Counter B</span>
+                    <div class="flex items-center gap-2 rounded-full bg-status-ready/10 px-4 py-1.5 text-status-ready border border-status-ready/20">
+                        <span class="material-symbols-outlined text-[18px]">check_circle</span><span class="text-[11px] font-extrabold uppercase tracking-wider">Ready</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="fixed bottom-0 z-40 w-full max-w-md border-t border-white/5 bg-background-dark/90 backdrop-blur-xl px-4 pb-8 pt-3">
+            <div class="flex justify-around items-center">
+                <a href="index.html" class="flex flex-col items-center gap-1 text-gray-500 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined text-[26px]">local_bar</span>
+                    <p class="text-[10px] font-bold uppercase">Menu</p>
+                </a>
+                <a href="status.html" class="flex flex-col items-center gap-1 text-status-ready">
+                    <div class="relative">
+                        <span class="material-symbols-outlined text-[26px] fill-current">monitoring</span>
+                        <span class="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-status-blending border border-background-dark"></span>
+                    </div>
+                    <p class="text-[10px] font-bold uppercase">Status</p>
+                </a>
+                <a href="basket.html" class="flex flex-col items-center gap-1 text-gray-500 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined text-[26px]">shopping_bag</span>
+                    <p class="text-[10px] font-bold uppercase">Cart</p>
+                </a>
+                <a href="#" class="flex flex-col items-center gap-1 text-gray-500 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined text-[26px]">person</span>
+                    <p class="text-[10px] font-bold uppercase">Profile</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
