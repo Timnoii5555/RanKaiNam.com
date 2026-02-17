@@ -1,59 +1,39 @@
 <!DOCTYPE html>
-<html class="dark" lang="th">
+<html lang="th">
 <head>
-    <meta charset="utf-8"/><title>Admin - ครัว</title>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet"/>
+    <meta charset="UTF-8"/><title>Admin - RanKaiNam</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
 </head>
-<body class="bg-[#121212] font-['Kanit'] text-white p-6">
+<body class="bg-[#121212] text-white font-['Kanit'] p-6">
     <div class="max-w-4xl mx-auto">
-        <h1 class="text-2xl font-bold mb-6 flex items-center gap-2">🔥 สถานะครัว: <span id="count" class="text-[#48C9B0]">0</span> ออเดอร์</h1>
-        <button onclick="load()" class="bg-blue-600 px-4 py-2 rounded-lg font-bold mb-8 shadow-lg active:scale-95">รีเฟรชออเดอร์</button>
-        <div id="display" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+        <h1 class="text-2xl font-bold mb-6">👨‍🍳 คิวงานห้องครัว (<span id="q-count">0</span>)</h1>
+        <div id="kitchen-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
     </div>
-
     <script>
         function load() {
             const orders = JSON.parse(localStorage.getItem('kitchenOrders')) || [];
-            document.getElementById('count').innerText = orders.length;
-            const display = document.getElementById('display');
-            
-            if (orders.length === 0) {
-                display.innerHTML = '<div class="col-span-full text-center py-20 opacity-50">ว่างงานจ้า 🎉</div>';
-                return;
-            }
-
-            display.innerHTML = orders.map((order, idx) => `
-                <div class="bg-[#1E1E1E] border border-white/10 rounded-2xl p-5 shadow-xl">
-                    <div class="flex justify-between border-b border-white/5 pb-2 mb-2">
-                        <span class="font-bold text-[#48C9B0]">${order.table}</span>
-                        <span class="text-xs text-gray-500">${order.time}</span>
-                    </div>
-                    <div class="space-y-2 mb-4">
-                        ${order.items.map(it => `
-                            <div class="flex justify-between text-sm">
-                                <span>${it.qty}x ${it.name}</span>
-                                <span class="text-gray-500">฿${(it.price * it.qty).toLocaleString()}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                    <div class="border-t border-white/5 pt-2 mb-4 flex justify-between font-bold">
-                        <span>ยอดรวม</span>
-                        <span class="text-[#48C9B0]">฿${order.total.toLocaleString()}</span>
-                    </div>
-                    <button onclick="done(${idx})" class="w-full bg-green-600 hover:bg-green-500 font-bold py-2 rounded-xl text-sm transition-colors">เสร็จสิ้น</button>
+            document.getElementById('q-count').innerText = orders.length;
+            const grid = document.getElementById('kitchen-grid');
+            if(orders.length === 0) { grid.innerHTML = '<p class="opacity-30">ไม่มีออเดอร์ค้างจ้า</p>'; return; }
+            grid.innerHTML = orders.map((o, idx) => `
+                <div class="bg-white/5 border border-white/10 p-6 rounded-2xl">
+                    <div class="flex justify-between mb-4 font-bold text-[#48C9B0]"><span>${o.id}</span><span>${o.time}</span></div>
+                    <div class="space-y-1 mb-6">${o.items.map(it => `<p class="text-sm">${it.qty}x ${it.name}</p>`).join('')}</div>
+                    <button onclick="done(${idx})" class="w-full bg-green-600 font-bold py-3 rounded-xl">ทำเสร็จแล้ว</button>
                 </div>
             `).join('');
         }
-
-        function done(i) {
-            let orders = JSON.parse(localStorage.getItem('kitchenOrders'));
-            orders.splice(i, 1);
+        function done(idx) {
+            let orders = JSON.parse(localStorage.getItem('kitchenOrders')) || [];
+            let completed = JSON.parse(localStorage.getItem('completedOrders')) || [];
+            completed.push(orders.splice(idx, 1)[0]);
             localStorage.setItem('kitchenOrders', JSON.stringify(orders));
+            localStorage.setItem('completedOrders', JSON.stringify(completed));
             load();
         }
-        load();
+        setInterval(load, 2000); load();
     </script>
 </body>
 </html>

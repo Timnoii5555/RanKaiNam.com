@@ -1,138 +1,60 @@
 <!DOCTYPE html>
 <html class="dark" lang="th">
 <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>สถานะออเดอร์ - RanKaiNam</title>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>สถานะ - RanKaiNam</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <script>
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: { "primary": "#00E676", "background-dark": "#121212", "card-dark": "#1E1E1E", "status-blending": "#FFB300", "status-ready": "#00FF88" },
-                    fontFamily: { "display": ["Kanit", "sans-serif"] },
-                },
-            },
-        }
-    </script>
-    <style> body { min-height: 100vh; background-color: #121212; } </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-background-dark text-white antialiased font-display">
-    <div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden max-w-md mx-auto bg-background-dark border-x border-white/5 shadow-2xl">
-        
-        <div class="sticky top-0 z-20 bg-background-dark/95 backdrop-blur-md border-b border-white/5 pb-4">
-            <div class="flex items-center justify-between px-5 pt-6 pb-4">
-                <a href="index.html" class="flex h-10 w-10 items-center justify-center rounded-full bg-white/5 text-white hover:bg-white/10 transition-colors">
-                    <span class="material-symbols-outlined">home</span>
-                </a>
-                <div class="text-center">
-                    <p class="text-[10px] font-bold uppercase tracking-wider text-gray-500">สถานะล่าสุด</p>
-                    <h1 class="text-lg font-bold tracking-tight text-white">RanKaiNam Station</h1>
-                </div>
-                <div class="flex h-10 w-10 items-center justify-center rounded-full bg-white/5 text-white">
-                    <span class="material-symbols-outlined text-status-ready">notifications_active</span>
-                </div>
-            </div>
-            
-            <div class="px-6 mt-2">
-                <div class="flex justify-between mb-3">
-                    <span class="text-[12px] font-bold text-status-ready uppercase">ออเดอร์ #402</span>
-                    <span class="text-[12px] font-bold text-gray-500">ประมาณ 4 นาที</span>
-                </div>
-                <div class="relative flex items-center justify-between">
-                    <div class="absolute top-1/2 left-0 w-full h-[2px] bg-white/10 -translate-y-1/2"></div>
-                    <div class="absolute top-1/2 left-0 w-1/2 h-[2px] bg-status-blending -translate-y-1/2"></div>
-                    
-                    <div class="relative flex flex-col items-center">
-                        <div class="h-4 w-4 rounded-full bg-status-ready border-4 border-background-dark"></div>
-                        <span class="mt-2 text-[10px] font-bold text-status-ready">รับแล้ว</span>
-                    </div>
-                    <div class="relative flex flex-col items-center">
-                        <div class="h-4 w-4 rounded-full bg-status-blending border-4 border-background-dark ring-4 ring-status-blending/30"></div>
-                        <span class="mt-2 text-[10px] font-bold text-status-blending">กำลังปั่น</span>
-                    </div>
-                    <div class="relative flex flex-col items-center">
-                        <div class="h-4 w-4 rounded-full bg-white/20 border-4 border-background-dark"></div>
-                        <span class="mt-2 text-[10px] font-bold text-gray-600">รอรับ</span>
-                    </div>
-                </div>
-            </div>
+<body class="bg-[#121212] font-['Kanit'] text-white max-w-md mx-auto min-h-screen flex flex-col border-x border-white/5">
+    <header class="p-6 flex justify-between items-center bg-[#121212]/90 sticky top-0 z-50">
+        <a href="index.html" class="material-symbols-outlined">home</a>
+        <h1 id="order-id-header" class="text-lg font-bold">Order #---</h1>
+        <div id="bell-box" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center relative">
+            <span id="bell-icon" class="material-symbols-outlined text-gray-500 transition-all duration-500">notifications</span>
+            <span id="bell-dot" class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full hidden"></span>
         </div>
-
-        <div class="flex-1 px-5 py-6 space-y-4 pb-32">
-            
-            <div class="flex items-center justify-between mb-2">
-                <h3 class="text-xs font-bold uppercase text-gray-500 tracking-widest">กำลังดำเนินการ</h3>
-                <span class="h-1.5 w-1.5 rounded-full bg-status-blending animate-pulse"></span>
+    </header>
+    <main class="p-6 flex-1 space-y-8 text-center">
+        <div class="bg-white/5 p-8 rounded-3xl border border-white/10">
+            <div id="status-icon" class="w-16 h-16 bg-[#48C9B0]/20 rounded-full flex items-center justify-center mx-auto mb-4 text-[#48C9B0]">
+                <span id="icon-inner" class="material-symbols-outlined text-4xl animate-spin">cyclone</span>
             </div>
-            <div class="group relative flex flex-col gap-4 rounded-2xl bg-card-dark p-4 border border-white/5 shadow-xl">
-                <div class="flex items-start justify-between">
-                    <div class="flex gap-4">
-                        <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-400 to-red-500 text-3xl shadow-lg">🥭</div>
-                        <div>
-                            <h4 class="text-base font-bold text-white">มะม่วงปั่น (Tropical Mango)</h4>
-                            <p class="text-xs text-gray-400 mt-1">เพิ่มโปรตีน • ไม่ใส่น้ำผึ้ง</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between border-t border-white/5 pt-3">
-                    <span class="text-[10px] font-medium text-gray-500">เริ่มเมื่อ 2 นาทีที่แล้ว</span>
-                    <div class="flex items-center gap-2 rounded-full bg-status-blending/10 px-4 py-1.5 text-status-blending border border-status-blending/20">
-                        <span class="material-symbols-outlined text-[18px] animate-spin">cyclone</span>
-                        <span class="text-[11px] font-bold uppercase tracking-wider">กำลังปั่น</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex items-center justify-between mt-8 mb-2">
-                <h3 class="text-xs font-bold uppercase text-gray-500 tracking-widest">พร้อมรับสินค้า</h3>
-            </div>
-            <div class="group relative flex flex-col gap-4 rounded-2xl bg-card-dark p-4 border border-white/5 shadow-lg border-l-4 border-l-status-ready">
-                <div class="flex items-start justify-between">
-                    <div class="flex gap-4">
-                        <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-green-400 to-emerald-600 text-3xl shadow-lg">🥒</div>
-                        <div>
-                            <h4 class="text-base font-bold text-white">กรีนดีท็อกซ์ (Green Detox)</h4>
-                            <p class="text-xs text-gray-400 mt-1">แก้วใหญ่ • เพิ่มขิง</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between border-t border-white/5 pt-3">
-                    <span class="text-[10px] font-medium text-gray-500">รับที่เคาน์เตอร์ B</span>
-                    <div class="flex items-center gap-2 rounded-full bg-status-ready/10 px-4 py-1.5 text-status-ready border border-status-ready/20">
-                        <span class="material-symbols-outlined text-[18px]">check_circle</span>
-                        <span class="text-[11px] font-bold uppercase tracking-wider">เสร็จแล้ว</span>
-                    </div>
-                </div>
-            </div>
+            <h2 id="status-title" class="text-xl font-bold mb-1">กำลังเตรียมออเดอร์</h2>
+            <p id="status-desc" class="text-xs text-gray-500">ห้องครัวกำลังปั่นเมนูของคุณอย่างตั้งใจ</p>
         </div>
-
-        <div class="fixed bottom-0 z-40 w-full max-w-md border-t border-white/5 bg-background-dark/90 backdrop-blur-xl px-4 pb-8 pt-3">
-            <div class="flex justify-around items-center">
-                <a href="index.html" class="flex flex-col items-center gap-1 text-gray-500 hover:text-primary transition-colors">
-                    <span class="material-symbols-outlined text-[26px]">local_bar</span>
-                    <p class="text-[10px] font-bold uppercase">เมนู</p>
-                </a>
-                <a href="status.html" class="flex flex-col items-center gap-1 text-status-ready">
-                    <div class="relative">
-                        <span class="material-symbols-outlined text-[26px] fill-current">monitoring</span>
-                        <span class="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-status-blending border border-background-dark"></span>
-                    </div>
-                    <p class="text-[10px] font-bold uppercase">สถานะ</p>
-                </a>
-                <a href="basket.html" class="flex flex-col items-center gap-1 text-gray-500 hover:text-primary transition-colors">
-                    <span class="material-symbols-outlined text-[26px]">shopping_bag</span>
-                    <p class="text-[10px] font-bold uppercase">ตะกร้า</p>
-                </a>
-                <a href="#" class="flex flex-col items-center gap-1 text-gray-500 hover:text-primary transition-colors">
-                    <span class="material-symbols-outlined text-[26px]">person</span>
-                    <p class="text-[10px] font-bold uppercase">โปรไฟล์</p>
-                </a>
-            </div>
-        </div>
+        <div id="items-list" class="space-y-3 text-left"></div>
+    </main>
+    <div id="alert-popup" class="fixed bottom-10 left-1/2 -translate-x-1/2 w-[85%] bg-[#48C9B0] text-black p-4 rounded-2xl font-bold shadow-2xl flex items-center gap-3 translate-y-[200%] transition-all duration-700">
+        <span class="material-symbols-outlined">check_circle</span>
+        <span>ออเดอร์ของคุณเสร็จสิ้นแล้ว!</span>
     </div>
+    <script>
+        function checkStatus() {
+            const current = JSON.parse(localStorage.getItem('currentOrder'));
+            if (!current) return;
+            document.getElementById('order-id-header').innerText = "Order " + current.id;
+            document.getElementById('items-list').innerHTML = current.items.map(it => `
+                <div class="bg-white/5 p-4 rounded-2xl flex justify-between border border-white/5 text-sm">
+                    <span class="font-bold">${it.qty}x ${it.name}</span>
+                    <span class="text-[#48C9B0]">฿${(it.price * it.qty).toLocaleString()}</span>
+                </div>
+            `).join('');
+            const timer = setInterval(() => {
+                const doneOrders = JSON.parse(localStorage.getItem('completedOrders')) || [];
+                if (doneOrders.some(o => o.id === current.id)) {
+                    document.getElementById('status-title').innerText = "เสร็จแล้ว!";
+                    document.getElementById('icon-inner').classList.remove('animate-spin');
+                    document.getElementById('icon-inner').innerText = "check_circle";
+                    document.getElementById('bell-icon').classList.replace('text-gray-500', 'text-green-500');
+                    document.getElementById('bell-dot').classList.remove('hidden');
+                    document.getElementById('alert-popup').style.transform = "translateY(0) translateX(-50%)";
+                    clearInterval(timer);
+                }
+            }, 2000);
+        }
+        checkStatus();
+    </script>
 </body>
 </html>
