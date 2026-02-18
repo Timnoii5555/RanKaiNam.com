@@ -56,13 +56,15 @@
                     <input class="w-full bg-[var(--bg-dark)] border-[var(--border-color)] text-white rounded-2xl p-4 outline-none focus:ring-2 focus:ring-[var(--accent-primary)]" id="menu-category" placeholder="หมวดหมู่ (เช่น น้ำปั่น)" type="text"/>
                     <input class="w-full bg-[var(--bg-dark)] border-[var(--border-color)] text-white rounded-2xl p-4 outline-none focus:ring-2 focus:ring-[var(--accent-primary)]" id="menu-price" placeholder="ราคา (฿)" type="number"/>
                     
-                    <label class="group flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-[var(--border-color)] hover:border-[var(--accent-secondary)] rounded-2xl cursor-pointer bg-[var(--bg-dark)]/50 transition-all relative">
+                    <label class="group flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-[var(--border-color)] hover:border-[var(--accent-secondary)] rounded-2xl cursor-pointer bg-[var(--bg-dark)]/50 transition-all relative overflow-hidden">
                         <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                            <span class="material-symbols-outlined text-3xl text-[var(--text-muted)] group-hover:text-[var(--accent-secondary)]">image</span>
-                            <p class="text-xs text-[var(--text-muted)] mt-1">เลือกรูปภาพ (แนะนำใช้ Link)</p>
+                            <span class="material-symbols-outlined text-3xl text-[var(--text-muted)] group-hover:text-[var(--accent-secondary)]">add_photo_alternate</span>
+                            <p class="text-xs text-[var(--text-muted)] mt-1">แตะเพื่อเลือกรูปจากแกลเลอรี่</p>
                         </div>
-                        <input class="w-full bg-transparent text-xs p-2 text-center text-gray-500" id="image-url" placeholder="วางลิงก์รูปภาพที่นี่ (URL)" type="text"/>
+                        <input accept="image/*" class="hidden" id="image-input" onchange="handleFileSelect(this)" type="file"/>
+                        <img class="absolute inset-0 w-full h-full object-cover hidden" id="preview"/>
                     </label>
+                    
                     <button class="w-full bg-gradient-to-r from-[var(--accent-primary)] to-indigo-600 hover:opacity-90 text-white font-bold py-4 rounded-2xl shadow-lg transition-all active:scale-[0.98]" onclick="addMenuToFirebase()">บันทึกขึ้น Cloud</button>
                 </div>
                 <div class="mt-8 border-t border-[var(--border-color)] pt-6">
@@ -104,6 +106,48 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
+    // ตัวแปรเก็บรูปที่เลือก
+    let selectedImageData = null;
+
+    // ฟังก์ชันย่อรูปภาพ (สำคัญมาก: ป้องกันรูปใหญ่เกินฐานข้อมูลรับไหว)
+    window.handleFileSelect = (input) => {
+        const file = input.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                
+                // กำหนดขนาดสูงสุด (800px) เพื่อลดขนาดไฟล์
+                const MAX_WIDTH = 800;
+                let width = img.width;
+                let height = img.height;
+
+                if (width > MAX_WIDTH) {
+                    height *= MAX_WIDTH / width;
+                    width = MAX_WIDTH;
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                ctx.drawImage(img, 0, 0, width, height);
+
+                // แปลงเป็น Base64 (JPEG quality 0.7)
+                selectedImageData = canvas.toDataURL('image/jpeg', 0.7);
+                
+                // แสดงตัวอย่าง
+                const preview = document.getElementById('preview');
+                preview.src = selectedImageData;
+                preview.classList.remove('hidden');
+            };
+            img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+    };
+
     // 1. โหลดรายการเมนู (Realtime)
     onSnapshot(collection(db, "menus"), (snapshot) => {
         const menus = snapshot.docs.map(d => ({id: d.id, ...d.data()}));
@@ -111,7 +155,7 @@
         
         document.getElementById('menu-management-list').innerHTML = menus.map(m => `
             <div class="flex items-center gap-3 p-3 bg-[var(--bg-dark)]/40 border border-white/5 rounded-xl">
-                <img src="${m.image}" class="w-10 h-10 object-cover rounded-lg bg-white/10">
+                <img src="${m.image}" class="w-10 h-10 object-cover rounded-lg bg-white/10" onerror="this.src='https://via.placeholder.com/150'">
                 <div class="flex-1">
                     <div class="text-sm font-semibold text-white">${m.name}</div>
                     <div class="text-[10px] text-[var(--accent-secondary)]">${m.category} • ฿${m.price}</div>
@@ -129,26 +173,31 @@
         const name = document.getElementById('menu-name').value;
         const category = document.getElementById('menu-category').value;
         const price = parseFloat(document.getElementById('menu-price').value);
-        const image = document.getElementById('image-url').value || 'https://via.placeholder.com/150';
+        
+        // ใช้รูปที่เลือก หรือถ้าไม่มีใช้รูป Placeholder
+        const image = selectedImageData || 'https://via.placeholder.com/150';
 
         if(!name || !category || isNaN(price)) return alert('กรุณากรอกข้อมูลให้ครบ');
 
         try {
             await addDoc(collection(db, "menus"), { name, category, price, image });
             alert('บันทึกขึ้น Cloud แล้ว!');
+            
+            // ล้างค่าฟอร์ม
             document.getElementById('menu-name').value = '';
             document.getElementById('menu-price').value = '';
-            document.getElementById('image-url').value = '';
+            document.getElementById('image-input').value = '';
+            document.getElementById('preview').classList.add('hidden');
+            selectedImageData = null;
         } catch (e) {
             alert('บันทึกไม่สำเร็จ: ' + e.message);
         }
     }
 
-    // 3. โหลดออเดอร์ (Realtime) - **แก้ไข: ลบ orderBy ออกเพื่อป้องกัน Index Error**
+    // 3. โหลดออเดอร์ (Realtime)
     const q = query(collection(db, "orders"), where("status", "==", "pending"));
     
     onSnapshot(q, (snapshot) => {
-        // เรียงลำดับด้วย JavaScript แทน
         const orders = snapshot.docs
             .map(d => ({docId: d.id, ...d.data()}))
             .sort((a, b) => (a.time || "").localeCompare(b.time || ""));
