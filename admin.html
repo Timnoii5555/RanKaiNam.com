@@ -91,7 +91,6 @@
 
 <script>
     let selectedImageData = "";
-    // ตัวแปรจำค่าล่าสุด เพื่อไม่ให้รีเฟรชหน้าจอถ้าข้อมูลไม่เปลี่ยน (แก้ปัญหากดไม่ติด)
     let lastOrdersHash = ""; 
 
     function previewImg(input) {
@@ -149,7 +148,7 @@
         const completed = JSON.parse(localStorage.getItem('completedOrders')) || [];
         
         // --- SMART RENDER LOGIC ---
-        // เช็คว่าข้อมูลเปลี่ยนไปไหม ถ้าเหมือนเดิม ไม่ต้องวาดใหม่ (แก้ปัญหากดปุ่มไม่ติด)
+        // ปรับปรุง: ถ้า hash ตรงกันให้หยุดทำงาน เพื่อลดภาระเครื่อง แต่ถ้าเป็นค่าว่าง (บังคับโหลด) ก็จะทำต่อ
         const currentHash = JSON.stringify(orders);
         if (currentHash === lastOrdersHash) return; 
         lastOrdersHash = currentHash;
@@ -182,11 +181,16 @@
     function done(idx) {
         let orders = JSON.parse(localStorage.getItem('kitchenOrders')) || [];
         let completed = JSON.parse(localStorage.getItem('completedOrders')) || [];
-        completed.push(orders.splice(idx, 1)[0]);
+        
+        // ย้ายออเดอร์
+        const finishedOrder = orders.splice(idx, 1)[0];
+        completed.push(finishedOrder);
+        
+        // บันทึกกลับ
         localStorage.setItem('kitchenOrders', JSON.stringify(orders));
         localStorage.setItem('completedOrders', JSON.stringify(completed));
         
-        // บังคับโหลดใหม่ทันทีไม่ต้องรอรอบ
+        // สำคัญ: บังคับให้โหลดใหม่ทันที โดยเคลียร์ Hash ทิ้ง
         lastOrdersHash = ""; 
         loadOrders();
     }
@@ -202,15 +206,14 @@
         }
     }
 
-    // ฟังเหตุการณ์จากแท็บอื่น (Sync ข้ามแท็บทันที)
+    // Sync ข้ามแท็บทันที
     window.addEventListener('storage', () => {
-        lastOrdersHash = ""; // บังคับรีเฟรช
+        lastOrdersHash = ""; // สั่งเคลียร์ Cache เพื่อให้ฟังก์ชัน loadOrders ยอมทำงาน
         loadOrders();
     });
 
     loadMenuAdmin();
     loadOrders();
-    // เช็คทุก 1 วินาที แต่จะวาดใหม่เฉพาะเมื่อข้อมูลเปลี่ยนเท่านั้น
     setInterval(loadOrders, 1000); 
 </script>
 </body>

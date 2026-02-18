@@ -65,67 +65,72 @@
     </div>
 
     <script>
-        // ใช้ตัวแปรเช็คสถานะเดิม เพื่อไม่ให้วาดหน้าจอซ้ำ
-        let lastStatusState = false; 
+        let isOrderCompleted = false; // ตัวแปรป้องกันการเรนเดอร์ซ้ำ
 
-        function initStatus() {
-            const current = JSON.parse(localStorage.getItem('currentOrder'));
-            if (!current) return;
-
-            document.getElementById('order-id-header').innerText = current.id;
+        function renderOrderItems(current) {
+            // ฟังก์ชันนี้จะทำงานครั้งเดียวเพื่อวาดรายการสินค้า
+            if (document.getElementById('items-list').innerHTML !== "") return;
             
-            // Render Items (ทำครั้งเดียวตอนโหลด)
-            if(document.getElementById('items-list').innerHTML === "") {
-                document.getElementById('items-list').innerHTML = current.items.map(it => `
-                    <div class="bg-[var(--card-bg)] p-4 rounded-2xl flex items-center justify-between border border-white/5">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center overflow-hidden"><img src="${it.image}" class="w-full h-full object-cover opacity-80"></div>
-                            <div><p class="text-sm font-bold">${it.name}</p><p class="text-[10px] text-gray-500">x${it.qty}</p></div>
-                        </div>
-                        <span class="text-sm font-semibold text-[var(--mint-accent)]">฿${it.price * it.qty}</span>
+            document.getElementById('order-id-header').innerText = current.id;
+            document.getElementById('items-list').innerHTML = current.items.map(it => `
+                <div class="bg-[var(--card-bg)] p-4 rounded-2xl flex items-center justify-between border border-white/5">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center overflow-hidden"><img src="${it.image}" class="w-full h-full object-cover opacity-80"></div>
+                        <div><p class="text-sm font-bold">${it.name}</p><p class="text-[10px] text-gray-500">x${it.qty}</p></div>
                     </div>
-                `).join('');
-            }
+                    <span class="text-sm font-semibold text-[var(--mint-accent)]">฿${it.price * it.qty}</span>
+                </div>
+            `).join('');
 
-            // Default State
+            // ตั้งค่า Default State
             document.getElementById('progress-circle').style.strokeDashoffset = 276.46 * 0.7;
             document.getElementById('step-2-icon').classList.replace('bg-white/5', 'bg-[var(--mint-accent)]');
             document.getElementById('step-2-symbol').classList.replace('text-gray-400', 'text-black');
             document.getElementById('step-2-text').classList.remove('opacity-50');
+        }
 
-            const timer = setInterval(() => {
-                const done = JSON.parse(localStorage.getItem('completedOrders')) || [];
-                const isDone = done.some(o => o.id === current.id);
+        function checkStatus() {
+            const current = JSON.parse(localStorage.getItem('currentOrder'));
+            if (!current) return;
 
-                // ถ้าสถานะเปลี่ยนเป็นเสร็จสิ้น และยังไม่ได้อัปเดต UI
-                if (isDone && !lastStatusState) {
-                    lastStatusState = true; // Mark as updated
-                    clearInterval(timer);
-                    
-                    document.getElementById('progress-circle').style.strokeDashoffset = 0;
-                    document.getElementById('progress-circle').classList.add('text-green-400');
-                    document.getElementById('status-main').innerText = "100%";
-                    document.getElementById('status-sub').innerText = "เสร็จสิ้น";
+            renderOrderItems(current);
 
-                    document.getElementById('step-2-line').classList.replace('bg-white/10', 'bg-[var(--mint-accent)]');
-                    document.getElementById('step-3-icon').classList.replace('bg-white/5', 'bg-[var(--mint-accent)]');
-                    document.getElementById('step-3-symbol').innerText = "check";
-                    document.getElementById('step-3-symbol').classList.replace('text-gray-600', 'text-black');
-                    document.getElementById('step-3-text').classList.replace('text-gray-500', 'text-white');
+            // ตรวจสอบสถานะว่าเสร็จหรือยัง
+            const completedList = JSON.parse(localStorage.getItem('completedOrders')) || [];
+            const isDone = completedList.some(o => o.id === current.id);
 
-                    document.getElementById('ready-overlay').classList.remove('translate-y-full');
-                    document.getElementById('alert-popup').style.transform = 'translate(-50%, 0)';
-                    
-                    const bell = document.getElementById('bell-icon');
-                    bell.classList.replace('text-gray-400', 'text-[var(--mint-accent)]');
-                    document.getElementById('bell-dot').classList.remove('hidden');
-                }
-            }, 1000); // Check every 1s
+            if (isDone && !isOrderCompleted) {
+                isOrderCompleted = true; // ล็อคไว้ไม่ให้ทำซ้ำ
+                
+                // อัปเดต UI ว่าเสร็จแล้ว
+                document.getElementById('progress-circle').style.strokeDashoffset = 0;
+                document.getElementById('progress-circle').classList.add('text-green-400');
+                document.getElementById('status-main').innerText = "100%";
+                document.getElementById('status-sub').innerText = "เสร็จสิ้น";
+
+                document.getElementById('step-2-line').classList.replace('bg-white/10', 'bg-[var(--mint-accent)]');
+                document.getElementById('step-3-icon').classList.replace('bg-white/5', 'bg-[var(--mint-accent)]');
+                document.getElementById('step-3-symbol').innerText = "check";
+                document.getElementById('step-3-symbol').classList.replace('text-gray-600', 'text-black');
+                document.getElementById('step-3-text').classList.replace('text-gray-500', 'text-white');
+
+                document.getElementById('ready-overlay').classList.remove('translate-y-full');
+                document.getElementById('alert-popup').style.transform = 'translate(-50%, 0)';
+                
+                const bell = document.getElementById('bell-icon');
+                bell.classList.replace('text-gray-400', 'text-[var(--mint-accent)]');
+                document.getElementById('bell-dot').classList.remove('hidden');
+            }
         }
         
-        // Listen for cross-tab updates
-        window.addEventListener('storage', () => initStatus());
-        initStatus();
+        // เรียกใช้งานครั้งแรก
+        checkStatus();
+
+        // 1. Sync ข้ามแท็บทันทีเมื่อ Admin กดเสร็จสิ้น
+        window.addEventListener('storage', checkStatus);
+
+        // 2. เช็คอัตโนมัติทุก 2 วินาที (Backup กรณี Event ไม่ทำงาน)
+        setInterval(checkStatus, 2000);
     </script>
 </body>
 </html>
