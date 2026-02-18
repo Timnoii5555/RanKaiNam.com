@@ -8,28 +8,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <style type="text/tailwindcss">
-    :root {
-        --bg-dark: #0f172a;
-        --card-dark: #1e293b;
-        --accent-primary: #8b5cf6;
-        --accent-secondary: #06b6d4;
-        --text-main: #f8fafc;
-        --text-muted: #94a3b8;
-        --border-color: #334155;
-    }
-    body { 
-        font-family: 'Plus Jakarta Sans', 'Kanit', sans-serif;
-        background-color: var(--bg-dark);
-        color: var(--text-main);
-    }
-    .custom-glass {
-        background: rgba(30, 41, 59, 0.7);
-        backdrop-filter: blur(12px);
-        border: 1px solid var(--border-color);
-    }
-    .soft-shadow {
-        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
-    }
+    :root { --bg-dark: #0f172a; --card-dark: #1e293b; --accent-primary: #8b5cf6; --accent-secondary: #06b6d4; --text-main: #f8fafc; --text-muted: #94a3b8; --border-color: #334155; }
+    body { font-family: 'Plus Jakarta Sans', 'Kanit', sans-serif; background-color: var(--bg-dark); color: var(--text-main); }
+    .custom-glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid var(--border-color); }
+    .soft-shadow { box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5); }
     input::placeholder { color: #64748b; }
 </style>
 <style> body { min-height: max(884px, 100dvh); } </style>
@@ -42,13 +24,12 @@
                 <span class="material-symbols-outlined text-4xl text-[var(--accent-primary)]">dashboard_customize</span>
                 แผงควบคุมผู้ดูแล
             </h1>
-            <p class="text-[var(--text-muted)] mt-1">จัดการร้านสมูทตี้และการดำเนินงานในครัวของคุณ</p>
+            <p class="text-[var(--text-muted)] mt-1">ระบบจัดการร้านเวอร์ชันอัปเกรด (Smart Sync)</p>
         </div>
         <div class="flex items-center gap-4">
-            <div class="flex flex-col items-end mr-2">
-                <span class="text-xs font-bold text-[var(--accent-secondary)] uppercase tracking-widest">สถานะร้านค้า</span>
-                <span class="text-sm text-green-400 flex items-center gap-1">● ออนไลน์</span>
-            </div>
+            <button onclick="resetSystem()" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 px-4 py-2.5 rounded-full font-bold text-xs flex items-center gap-2 border border-red-500/20 transition-all">
+                <span class="material-symbols-outlined text-sm">restart_alt</span> รีเซ็ตระบบเริ่ม #001
+            </button>
             <a class="bg-white/10 hover:bg-white/20 transition-all text-white px-6 py-2.5 rounded-full font-semibold flex items-center gap-2 border border-white/10" href="index.html">
                 <span class="material-symbols-outlined text-sm">visibility</span> ดูร้านค้า
             </a>
@@ -57,73 +38,42 @@
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="custom-glass p-6 rounded-3xl soft-shadow flex items-center justify-between">
-            <div>
-                <p class="text-sm text-[var(--text-muted)]">ออเดอร์ที่กำลังดำเนินการ</p>
-                <h3 class="text-3xl font-bold mt-1" id="stat-active">0</h3>
-            </div>
-            <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 flex items-center justify-center text-indigo-400">
-                <span class="material-symbols-outlined">pending_actions</span>
-            </div>
+            <div><p class="text-sm text-[var(--text-muted)]">ออเดอร์ที่กำลังดำเนินการ</p><h3 class="text-3xl font-bold mt-1" id="stat-active">0</h3></div>
+            <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 flex items-center justify-center text-indigo-400"><span class="material-symbols-outlined">pending_actions</span></div>
         </div>
         <div class="custom-glass p-6 rounded-3xl soft-shadow flex items-center justify-between">
-            <div>
-                <p class="text-sm text-[var(--text-muted)]">เสร็จสิ้นวันนี้</p>
-                <h3 class="text-3xl font-bold mt-1" id="stat-done">0</h3>
-            </div>
-            <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 flex items-center justify-center text-emerald-400">
-                <span class="material-symbols-outlined">check_circle</span>
-            </div>
+            <div><p class="text-sm text-[var(--text-muted)]">เสร็จสิ้นวันนี้</p><h3 class="text-3xl font-bold mt-1" id="stat-done">0</h3></div>
+            <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 flex items-center justify-center text-emerald-400"><span class="material-symbols-outlined">check_circle</span></div>
         </div>
         <div class="custom-glass p-6 rounded-3xl soft-shadow flex items-center justify-between">
-            <div>
-                <p class="text-sm text-[var(--text-muted)]">เมนูทั้งหมด</p>
-                <h3 class="text-3xl font-bold mt-1" id="stat-menus">0</h3>
-            </div>
-            <div class="w-12 h-12 rounded-2xl bg-sky-500/20 flex items-center justify-center text-sky-400">
-                <span class="material-symbols-outlined">restaurant_menu</span>
-            </div>
+            <div><p class="text-sm text-[var(--text-muted)]">เมนูทั้งหมด</p><h3 class="text-3xl font-bold mt-1" id="stat-menus">0</h3></div>
+            <div class="w-12 h-12 rounded-2xl bg-sky-500/20 flex items-center justify-center text-sky-400"><span class="material-symbols-outlined">restaurant_menu</span></div>
         </div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
         <div class="lg:col-span-5 space-y-8">
             <section class="custom-glass rounded-3xl p-8 soft-shadow border border-white/5">
-                <h2 class="text-xl font-bold mb-8 flex items-center gap-2" id="form-title">
-                    <span class="material-symbols-outlined text-[var(--accent-primary)]">add_circle</span>
-                    การจัดการคลังสินค้า
-                </h2>
+                <h2 class="text-xl font-bold mb-8 flex items-center gap-2"><span class="material-symbols-outlined text-[var(--accent-primary)]">add_circle</span> เพิ่มเมนูสินค้า</h2>
                 <div class="space-y-6">
                     <input id="edit-index" type="hidden" value="-1"/>
-                    <div class="space-y-2">
-                        <label class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider ml-1">ชื่อเมนู</label>
-                        <input class="w-full bg-[var(--bg-dark)] border-[var(--border-color)] text-white rounded-2xl p-4 outline-none focus:ring-2 focus:ring-[var(--accent-primary)] transition-all" id="menu-name" placeholder="ชื่อสินค้า..." type="text"/>
-                    </div>
-                    <div class="space-y-2">
-                        <label class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider ml-1">หมวดหมู่</label>
-                        <input class="w-full bg-[var(--bg-dark)] border-[var(--border-color)] text-white rounded-2xl p-4 outline-none focus:ring-2 focus:ring-[var(--accent-primary)] transition-all" id="menu-category" placeholder="เช่น น้ำปั่น, โซดา" type="text"/>
-                    </div>
-                    <div class="space-y-2">
-                        <label class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider ml-1">ราคา (฿)</label>
-                        <input class="w-full bg-[var(--bg-dark)] border-[var(--border-color)] text-white rounded-2xl p-4 outline-none focus:ring-2 focus:ring-[var(--accent-primary)] transition-all" id="menu-price" placeholder="0.00" type="number"/>
-                    </div>
-                    <div class="space-y-2">
-                        <label class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider ml-1">รูปภาพเมนู</label>
-                        <label class="group flex flex-col items-center justify-center w-full h-44 border-2 border-dashed border-[var(--border-color)] hover:border-[var(--accent-secondary)] rounded-2xl cursor-pointer bg-[var(--bg-dark)]/50 transition-all overflow-hidden relative">
-                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                                <span class="material-symbols-outlined text-4xl text-[var(--text-muted)] group-hover:text-[var(--accent-secondary)] mb-2">image</span>
-                                <p class="text-sm font-medium text-[var(--text-muted)] group-hover:text-white">อัปโหลดรูปภาพ</p>
-                            </div>
-                            <input accept="image/*" class="hidden" id="image-input" onchange="previewImg(this)" type="file"/>
-                            <img class="absolute inset-0 w-full h-full object-cover hidden" id="preview"/>
-                        </label>
-                    </div>
-                    <button class="w-full bg-gradient-to-r from-[var(--accent-primary)] to-indigo-600 hover:opacity-90 text-white font-bold py-4 rounded-2xl shadow-[0_4px_20px_rgba(139,92,246,0.4)] transition-all transform active:scale-[0.98]" onclick="saveMenu()">
-                        บันทึกสินค้า
-                    </button>
+                    <input class="w-full bg-[var(--bg-dark)] border-[var(--border-color)] text-white rounded-2xl p-4 outline-none focus:ring-2 focus:ring-[var(--accent-primary)]" id="menu-name" placeholder="ชื่อเมนู" type="text"/>
+                    <input class="w-full bg-[var(--bg-dark)] border-[var(--border-color)] text-white rounded-2xl p-4 outline-none focus:ring-2 focus:ring-[var(--accent-primary)]" id="menu-category" placeholder="หมวดหมู่ (เช่น น้ำปั่น, โซดา)" type="text"/>
+                    <input class="w-full bg-[var(--bg-dark)] border-[var(--border-color)] text-white rounded-2xl p-4 outline-none focus:ring-2 focus:ring-[var(--accent-primary)]" id="menu-price" placeholder="ราคา (฿)" type="number"/>
+                    
+                    <label class="group flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-[var(--border-color)] hover:border-[var(--accent-secondary)] rounded-2xl cursor-pointer bg-[var(--bg-dark)]/50 transition-all relative">
+                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                            <span class="material-symbols-outlined text-3xl text-[var(--text-muted)] group-hover:text-[var(--accent-secondary)]">image</span>
+                            <p class="text-xs text-[var(--text-muted)] mt-1">เลือกรูปภาพ</p>
+                        </div>
+                        <input accept="image/*" class="hidden" id="image-input" onchange="previewImg(this)" type="file"/>
+                        <img class="absolute inset-0 w-full h-full object-cover hidden rounded-2xl" id="preview"/>
+                    </label>
+                    <button class="w-full bg-gradient-to-r from-[var(--accent-primary)] to-indigo-600 hover:opacity-90 text-white font-bold py-4 rounded-2xl shadow-lg transition-all active:scale-[0.98]" onclick="saveMenu()">บันทึกสินค้า</button>
                 </div>
-                <div class="mt-12 border-t border-[var(--border-color)] pt-8">
-                    <h3 class="text-sm font-bold text-[var(--text-muted)] uppercase tracking-widest mb-6">รายการปัจจุบัน</h3>
-                    <div class="space-y-3" id="menu-management-list"></div>
+                <div class="mt-8 border-t border-[var(--border-color)] pt-6">
+                    <h3 class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest mb-4">รายการปัจจุบัน</h3>
+                    <div class="space-y-3 max-h-60 overflow-y-auto pr-2" id="menu-management-list"></div>
                 </div>
             </section>
         </div>
@@ -131,14 +81,7 @@
         <div class="lg:col-span-7">
             <div class="sticky top-8">
                 <div class="flex justify-between items-center mb-8">
-                    <h2 class="text-2xl font-bold flex items-center gap-3">
-                        <span class="material-symbols-outlined text-[var(--accent-secondary)]">outdoor_grill</span>
-                        คิวในห้องครัว
-                        <span class="bg-[var(--accent-secondary)] text-slate-900 text-xs px-2.5 py-1 rounded-full ml-1" id="q-count">0</span>
-                    </h2>
-                    <div class="flex gap-2">
-                        <button onclick="localStorage.removeItem('kitchenOrders'); loadAdmin();" class="text-red-400 text-xs hover:underline">ล้างคิว</button>
-                    </div>
+                    <h2 class="text-2xl font-bold flex items-center gap-3"><span class="material-symbols-outlined text-[var(--accent-secondary)]">outdoor_grill</span> คิวในห้องครัว (<span id="q-count">0</span>)</h2>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="kitchen-display"></div>
             </div>
@@ -148,6 +91,9 @@
 
 <script>
     let selectedImageData = "";
+    // ตัวแปรจำค่าล่าสุด เพื่อไม่ให้รีเฟรชหน้าจอถ้าข้อมูลไม่เปลี่ยน (แก้ปัญหากดไม่ติด)
+    let lastOrdersHash = ""; 
+
     function previewImg(input) {
         const file = input.files[0];
         if (file) {
@@ -165,22 +111,18 @@
         const name = document.getElementById('menu-name').value;
         const category = document.getElementById('menu-category').value;
         const price = parseFloat(document.getElementById('menu-price').value);
-        const index = parseInt(document.getElementById('edit-index').value);
-
-        if(!name || !category || isNaN(price) || !selectedImageData) return alert('กรุณากรอกข้อมูลให้ครบและเพิ่มรูปภาพ');
+        
+        if(!name || !category || isNaN(price) || !selectedImageData) return alert('กรุณากรอกข้อมูลให้ครบถ้วน');
 
         let menus = JSON.parse(localStorage.getItem('myMenus')) || [];
-        const menuData = { name, category, price, image: selectedImageData };
-
-        if (index === -1) menus.push(menuData);
-        else menus[index] = menuData;
-
+        menus.push({ name, category, price, image: selectedImageData });
         localStorage.setItem('myMenus', JSON.stringify(menus));
+        alert('เพิ่มเมนูเรียบร้อย');
         location.reload();
     }
 
     function deleteMenu(i) {
-        if(confirm('ลบรายการเมนูนี้หรือไม่?')) {
+        if(confirm('ยืนยันลบเมนูนี้?')) {
             let menus = JSON.parse(localStorage.getItem('myMenus'));
             menus.splice(i, 1);
             localStorage.setItem('myMenus', JSON.stringify(menus));
@@ -188,58 +130,50 @@
         }
     }
 
-    function loadAdmin() {
+    function loadMenuAdmin() {
         const menus = JSON.parse(localStorage.getItem('myMenus')) || [];
         document.getElementById('stat-menus').innerText = menus.length;
         document.getElementById('menu-management-list').innerHTML = menus.map((m, i) => `
-            <div class="flex items-center gap-4 p-3 bg-[var(--bg-dark)]/40 hover:bg-[var(--bg-dark)] border border-white/5 rounded-2xl transition-all">
-                <img src="${m.image}" class="w-12 h-12 object-cover rounded-xl shadow-lg border border-white/10">
+            <div class="flex items-center gap-3 p-3 bg-[var(--bg-dark)]/40 border border-white/5 rounded-xl">
+                <img src="${m.image}" class="w-10 h-10 object-cover rounded-lg">
                 <div class="flex-1">
                     <div class="text-sm font-semibold text-white">${m.name}</div>
-                    <div class="flex items-center gap-2 text-[11px] font-medium">
-                        <span class="text-[var(--accent-secondary)]">฿${m.price}</span>
-                        <span class="text-[var(--text-muted)]">•</span>
-                        <span class="text-[var(--text-muted)] px-2 py-0.5 rounded bg-white/5">${m.category}</span>
-                    </div>
+                    <div class="text-[10px] text-[var(--accent-secondary)]">${m.category} • ฿${m.price}</div>
                 </div>
-                <button onclick="deleteMenu(${i})" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-red-500/10 text-red-400/70 hover:text-red-400 transition-colors">
-                    <span class="material-symbols-outlined text-xl">delete</span>
-                </button>
+                <button onclick="deleteMenu(${i})" class="text-red-400 hover:text-red-300"><span class="material-symbols-outlined text-lg">delete</span></button>
             </div>`).join('');
+    }
 
+    function loadOrders() {
         const orders = JSON.parse(localStorage.getItem('kitchenOrders')) || [];
         const completed = JSON.parse(localStorage.getItem('completedOrders')) || [];
         
+        // --- SMART RENDER LOGIC ---
+        // เช็คว่าข้อมูลเปลี่ยนไปไหม ถ้าเหมือนเดิม ไม่ต้องวาดใหม่ (แก้ปัญหากดปุ่มไม่ติด)
+        const currentHash = JSON.stringify(orders);
+        if (currentHash === lastOrdersHash) return; 
+        lastOrdersHash = currentHash;
+        // --------------------------
+
         document.getElementById('q-count').innerText = orders.length;
         document.getElementById('stat-active').innerText = orders.length;
         document.getElementById('stat-done').innerText = completed.length;
 
+        const display = document.getElementById('kitchen-display');
         if(orders.length === 0) {
-            document.getElementById('kitchen-display').innerHTML = '<div class="col-span-full text-center text-slate-500 py-10">ยังไม่มีออเดอร์เข้ามา</div>';
+            display.innerHTML = '<div class="col-span-full text-center text-slate-500 py-10 bg-white/5 rounded-3xl">ยังไม่มีออเดอร์เข้ามา</div>';
         } else {
-            document.getElementById('kitchen-display').innerHTML = orders.map((o, idx) => `
-                <div class="custom-glass p-6 rounded-3xl soft-shadow border-l-4 border-l-[var(--accent-secondary)]">
-                    <div class="flex justify-between items-start mb-4">
-                        <div>
-                            <span class="text-[10px] font-black uppercase tracking-widest text-[var(--accent-secondary)]">รหัสออเดอร์</span>
-                            <h4 class="text-lg font-bold text-white">${o.id}</h4>
-                        </div>
-                        <div class="text-right">
-                            <span class="text-[10px] font-black uppercase tracking-widest text-slate-500">สั่งเมื่อ</span>
-                            <div class="text-sm text-slate-300 font-medium">${o.time}</div>
-                        </div>
+            display.innerHTML = orders.map((o, idx) => `
+                <div class="custom-glass p-5 rounded-2xl soft-shadow border-l-4 border-l-[var(--accent-secondary)] animate-fade-in">
+                    <div class="flex justify-between items-start mb-3">
+                        <div><span class="text-[10px] font-black uppercase text-[var(--accent-secondary)]">ORDER</span><h4 class="text-lg font-bold text-white">${o.id}</h4></div>
+                        <div class="text-right"><div class="text-xs text-slate-300 bg-slate-800 px-2 py-1 rounded">${o.time}</div></div>
                     </div>
-                    <div class="space-y-2 mb-8 bg-slate-900/30 p-3 rounded-xl border border-white/5">
-                        ${o.items.map(it => `
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm font-medium text-slate-200">${it.name}</span>
-                                <span class="text-xs font-black bg-slate-800 text-slate-300 px-2 py-0.5 rounded">x${it.qty}</span>
-                            </div>
-                        `).join('')}
+                    <div class="space-y-1 mb-4 bg-slate-900/30 p-3 rounded-xl border border-white/5">
+                        ${o.items.map(it => `<div class="flex justify-between items-center"><span class="text-sm text-slate-200">${it.name}</span><span class="text-xs font-bold bg-slate-700 px-2 py-0.5 rounded">x${it.qty}</span></div>`).join('')}
                     </div>
-                    <button onclick="done(${idx})" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 py-3.5 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all transform active:scale-95 shadow-[0_0_20px_rgba(16,185,129,0.2)]">
-                        <span class="material-symbols-outlined">check_circle</span>
-                        ทำรายการเสร็จสิ้น
+                    <button onclick="done(${idx})" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95">
+                        <span class="material-symbols-outlined">check</span> ทำรายการเสร็จสิ้น
                     </button>
                 </div>`).join('');
         }
@@ -251,11 +185,33 @@
         completed.push(orders.splice(idx, 1)[0]);
         localStorage.setItem('kitchenOrders', JSON.stringify(orders));
         localStorage.setItem('completedOrders', JSON.stringify(completed));
-        loadAdmin();
+        
+        // บังคับโหลดใหม่ทันทีไม่ต้องรอรอบ
+        lastOrdersHash = ""; 
+        loadOrders();
     }
 
-    setInterval(loadAdmin, 2000);
-    loadAdmin();
+    function resetSystem() {
+        if(confirm('ต้องการล้างข้อมูลออเดอร์ทั้งหมดและเริ่มนับ #001 ใหม่หรือไม่? (เมนูจะไม่หาย)')) {
+            localStorage.removeItem('kitchenOrders');
+            localStorage.removeItem('completedOrders');
+            localStorage.removeItem('lastOrderNum');
+            localStorage.removeItem('currentOrder');
+            alert('รีเซ็ตระบบเรียบร้อย');
+            location.reload();
+        }
+    }
+
+    // ฟังเหตุการณ์จากแท็บอื่น (Sync ข้ามแท็บทันที)
+    window.addEventListener('storage', () => {
+        lastOrdersHash = ""; // บังคับรีเฟรช
+        loadOrders();
+    });
+
+    loadMenuAdmin();
+    loadOrders();
+    // เช็คทุก 1 วินาที แต่จะวาดใหม่เฉพาะเมื่อข้อมูลเปลี่ยนเท่านั้น
+    setInterval(loadOrders, 1000); 
 </script>
 </body>
 </html>

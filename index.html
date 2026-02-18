@@ -8,35 +8,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <style type="text/tailwindcss">
-    :root {
-        --primary-mint: #48C9B0;
-        --glass-bg: rgba(255, 255, 255, 0.04);
-        --glass-border: rgba(255, 255, 255, 0.1);
-    }
-    body {
-        font-family: 'Kanit', sans-serif;
-        background-color: #0A0A0A;
-    }
-    .glass-card {
-        background: var(--glass-bg);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid var(--glass-border);
-    }
-    .glow-mint {
-        box-shadow: 0 10px 30px -5px rgba(72, 201, 176, 0.4);
-    }
-    .header-blur {
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-    }
+    :root { --primary-mint: #48C9B0; --glass-bg: rgba(255, 255, 255, 0.04); --glass-border: rgba(255, 255, 255, 0.1); }
+    body { font-family: 'Kanit', sans-serif; background-color: #0A0A0A; }
+    .glass-card { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); }
+    .glow-mint { box-shadow: 0 10px 30px -5px rgba(72, 201, 176, 0.4); }
+    .header-blur { backdrop-filter: blur(20px); }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 </style>
 <style> body { min-height: max(884px, 100dvh); } </style>
 </head>
 <body class="text-white max-w-md mx-auto min-h-screen relative">
-    <header class="p-6 flex justify-between items-center sticky top-0 z-50 bg-[#0A0A0A]/70 header-blur">
+    <header class="p-6 flex justify-between items-center sticky top-0 z-50 bg-[#0A0A0A]/80 header-blur">
         <div class="flex flex-col">
             <span class="text-xs font-medium text-[var(--primary-mint)] uppercase tracking-wider">ร้านน้ำปั่น</span>
             <h1 class="text-2xl font-semibold tracking-tight">RanKaiNam</h1>
@@ -50,7 +33,6 @@
     </header>
 
     <div class="px-6 mb-6 flex gap-3 overflow-x-auto no-scrollbar" id="category-list"></div>
-
     <main class="px-6 grid grid-cols-2 gap-5 pb-36" id="menu-grid"></main>
 
     <div class="fixed bottom-8 left-0 right-0 px-6 z-50 transition-all duration-300 transform translate-y-full" id="cart-bar">
@@ -75,24 +57,17 @@
         function loadData() {
             const menus = JSON.parse(localStorage.getItem('myMenus')) || [];
             
+            // สร้างหมวดหมู่
             const categories = ['ทั้งหมด', ...new Set(menus.map(m => m.category || 'ทั่วไป'))];
-            
-            const catList = document.getElementById('category-list');
-            catList.innerHTML = categories.map(cat => `
-                <button onclick="filterMenu('${cat}')" 
-                      class="px-5 py-2 rounded-full text-sm font-medium whitespace-nowrap cursor-pointer transition-colors border border-transparent ${cat === currentFilter ? 'bg-[var(--primary-mint)] text-black font-semibold shadow-[0_0_15px_rgba(72,201,176,0.4)]' : 'glass-card text-gray-400 hover:border-white/20'}">
-                    ${cat}
-                </button>
+            document.getElementById('category-list').innerHTML = categories.map(cat => `
+                <button onclick="filterMenu('${cat}')" class="px-5 py-2 rounded-full text-sm font-medium whitespace-nowrap cursor-pointer transition-colors border border-transparent ${cat === currentFilter ? 'bg-[var(--primary-mint)] text-black font-semibold shadow-[0_0_15px_rgba(72,201,176,0.4)]' : 'glass-card text-gray-400 hover:border-white/20'}">${cat}</button>
             `).join('');
 
+            // เตรียมข้อมูล + Index (แก้บั๊กกดไม่ติด)
             const menusWithIndex = menus.map((m, originalIndex) => ({ ...m, originalIndex }));
-
-            const filteredMenus = currentFilter === 'ทั้งหมด' 
-                ? menusWithIndex 
-                : menusWithIndex.filter(m => (m.category || 'ทั่วไป') === currentFilter);
+            const filteredMenus = currentFilter === 'ทั้งหมด' ? menusWithIndex : menusWithIndex.filter(m => (m.category || 'ทั่วไป') === currentFilter);
             
             const grid = document.getElementById('menu-grid');
-            
             if (filteredMenus.length === 0) {
                 grid.innerHTML = '<p class="col-span-2 text-center text-gray-500 py-10">ยังไม่มีสินค้าในหมวดหมู่นี้</p>';
             } else {
@@ -116,25 +91,21 @@
             updateCartUI();
         }
 
-        function filterMenu(cat) {
-            currentFilter = cat;
-            loadData();
-        }
+        function filterMenu(cat) { currentFilter = cat; loadData(); }
 
         function addToCart(index) {
             const allMenus = JSON.parse(localStorage.getItem('myMenus')) || [];
             const item = allMenus[index]; 
-
             if (!item) return;
 
             let cart = JSON.parse(localStorage.getItem('cartData')) || [];
             let found = cart.find(x => x.name === item.name);
-            if(found) found.qty++; 
-            else cart.push({ name: item.name, price: item.price, image: item.image, qty: 1 });
+            if(found) found.qty++; else cart.push({ name: item.name, price: item.price, image: item.image, qty: 1 });
             
             localStorage.setItem('cartData', JSON.stringify(cart));
             updateCartUI();
             
+            // Animation ปุ่มเด้ง
             const bar = document.getElementById('cart-bar');
             bar.classList.add('scale-105');
             setTimeout(() => bar.classList.remove('scale-105'), 150);
@@ -145,10 +116,9 @@
             const count = cart.reduce((s,x)=>s+x.qty, 0);
             const total = cart.reduce((s,x)=>s+(x.price*x.qty), 0);
             document.getElementById('cart-count').innerText = count;
-            document.getElementById('cart-total').innerText = '฿ ' + total.toLocaleString(undefined, {minimumFractionDigits: 2});
+            document.getElementById('cart-total').innerText = '฿ ' + total.toLocaleString();
             const bar = document.getElementById('cart-bar');
-            if (count > 0) bar.classList.remove('translate-y-full');
-            else bar.classList.add('translate-y-full');
+            if (count > 0) bar.classList.remove('translate-y-full'); else bar.classList.add('translate-y-full');
         }
 
         loadData();

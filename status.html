@@ -3,37 +3,21 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>สถานะการจัดเตรียมออเดอร์ - RanKaiNam</title>
+<title>สถานะการจัดเตรียมออเดอร์</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <style type="text/tailwindcss">
-    :root {
-        --mint-accent: #48C9B0;
-        --dark-bg: #0D0D0D;
-        --card-bg: #1A1A1A;
-    }
-    .progress-ring__circle {
-        transition: stroke-dashoffset 0.5s ease-in-out, stroke 0.3s;
-        transform: rotate(-90deg);
-        transform-origin: 50% 50%;
-    }
+    :root { --mint-accent: #48C9B0; --dark-bg: #0D0D0D; --card-bg: #1A1A1A; }
+    .progress-ring__circle { transition: stroke-dashoffset 0.5s ease-in-out, stroke 0.3s; transform: rotate(-90deg); transform-origin: 50% 50%; }
 </style>
 <style> body { min-height: max(884px, 100dvh); } </style>
 </head>
 <body class="bg-[var(--dark-bg)] font-['Kanit'] text-white max-w-md mx-auto min-h-screen flex flex-col selection:bg-[var(--mint-accent)] selection:text-black">
     <header class="px-6 py-4 flex justify-between items-center bg-[var(--dark-bg)]/80 backdrop-blur-md sticky top-0 z-50 border-b border-white/5">
-        <a class="w-10 h-10 flex items-center justify-center rounded-full bg-white/5" href="index.html">
-            <span class="material-symbols-outlined text-gray-400">arrow_back_ios_new</span>
-        </a>
-        <div class="text-center">
-            <h1 class="text-sm font-light text-gray-400 tracking-widest uppercase">ติดตามออเดอร์</h1>
-            <p class="text-lg font-bold" id="order-id-header">#---</p>
-        </div>
-        <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center relative">
-            <span class="material-symbols-outlined text-gray-400" id="bell-icon">notifications</span>
-            <span class="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full hidden" id="bell-dot"></span>
-        </div>
+        <a class="w-10 h-10 flex items-center justify-center rounded-full bg-white/5" href="index.html"><span class="material-symbols-outlined text-gray-400">arrow_back_ios_new</span></a>
+        <div class="text-center"><h1 class="text-sm font-light text-gray-400 tracking-widest uppercase">ติดตามออเดอร์</h1><p class="text-lg font-bold" id="order-id-header">#---</p></div>
+        <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center relative"><span class="material-symbols-outlined text-gray-400" id="bell-icon">notifications</span><span class="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full hidden" id="bell-dot"></span></div>
     </header>
 
     <main class="px-6 py-8 flex-1 flex flex-col space-y-10">
@@ -51,46 +35,20 @@
 
         <div class="bg-[var(--card-bg)] p-6 rounded-[2.5rem] border border-white/5 shadow-2xl relative overflow-hidden">
             <div class="absolute inset-0 bg-[var(--mint-accent)] flex flex-col items-center justify-center text-black z-20 translate-y-full transition-transform duration-500" id="ready-overlay">
-                <span class="material-symbols-outlined text-6xl mb-2 animate-bounce">celebration</span>
-                <span class="text-2xl font-bold">ออเดอร์พร้อมแล้ว!</span>
-                <span class="text-sm opacity-80 uppercase tracking-widest">รับได้ที่เคาน์เตอร์</span>
+                <span class="material-symbols-outlined text-6xl mb-2 animate-bounce">celebration</span><span class="text-2xl font-bold">ออเดอร์พร้อมแล้ว!</span><span class="text-sm opacity-80 uppercase tracking-widest">รับได้ที่เคาน์เตอร์</span>
             </div>
-
             <div class="space-y-8">
                 <div class="flex gap-4 group">
-                    <div class="flex flex-col items-center">
-                        <div class="w-8 h-8 rounded-full bg-[var(--mint-accent)] flex items-center justify-center ring-4 ring-[var(--mint-accent)]/20">
-                            <span class="material-symbols-outlined text-black text-sm font-bold">check</span>
-                        </div>
-                        <div class="w-[2px] h-full bg-[var(--mint-accent)] mt-2"></div>
-                    </div>
-                    <div class="pb-6">
-                        <h3 class="text-white font-semibold">ยืนยันออเดอร์แล้ว</h3>
-                        <p class="text-xs text-gray-500">เราได้รับคำสั่งซื้อของคุณแล้ว</p>
-                    </div>
+                    <div class="flex flex-col items-center"><div class="w-8 h-8 rounded-full bg-[var(--mint-accent)] flex items-center justify-center ring-4 ring-[var(--mint-accent)]/20"><span class="material-symbols-outlined text-black text-sm font-bold">check</span></div><div class="w-[2px] h-full bg-[var(--mint-accent)] mt-2"></div></div>
+                    <div class="pb-6"><h3 class="text-white font-semibold">ยืนยันออเดอร์แล้ว</h3><p class="text-xs text-gray-500">เราได้รับคำสั่งซื้อของคุณแล้ว</p></div>
                 </div>
                 <div class="flex gap-4">
-                    <div class="flex flex-col items-center">
-                        <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center transition-all duration-500" id="step-2-icon">
-                            <span class="material-symbols-outlined text-gray-400 text-sm animate-spin" id="step-2-symbol">refresh</span>
-                        </div>
-                        <div class="w-[2px] h-full bg-white/10 mt-2 transition-colors duration-500" id="step-2-line"></div>
-                    </div>
-                    <div class="pb-6">
-                        <h3 class="text-white font-semibold opacity-50 transition-opacity duration-500" id="step-2-text">กำลังเตรียมเครื่องดื่ม</h3>
-                        <p class="text-xs text-gray-500">กำลังผสมวัตถุดิบสดใหม่</p>
-                    </div>
+                    <div class="flex flex-col items-center"><div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center transition-all duration-500" id="step-2-icon"><span class="material-symbols-outlined text-gray-400 text-sm animate-spin" id="step-2-symbol">refresh</span></div><div class="w-[2px] h-full bg-white/10 mt-2 transition-colors duration-500" id="step-2-line"></div></div>
+                    <div class="pb-6"><h3 class="text-white font-semibold opacity-50 transition-opacity duration-500" id="step-2-text">กำลังเตรียมเครื่องดื่ม</h3><p class="text-xs text-gray-500">กำลังผสมวัตถุดิบสดใหม่</p></div>
                 </div>
                 <div class="flex gap-4">
-                    <div class="flex flex-col items-center">
-                        <div class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center transition-all duration-500" id="step-3-icon">
-                            <span class="material-symbols-outlined text-gray-600 text-sm" id="step-3-symbol">local_mall</span>
-                        </div>
-                    </div>
-                    <div class="pb-2">
-                        <h3 class="text-gray-500 font-semibold transition-colors duration-500" id="step-3-text">พร้อมรับแล้ว</h3>
-                        <p class="text-xs text-gray-600">รอการตรวจสอบขั้นสุดท้าย</p>
-                    </div>
+                    <div class="flex flex-col items-center"><div class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center transition-all duration-500" id="step-3-icon"><span class="material-symbols-outlined text-gray-600 text-sm" id="step-3-symbol">local_mall</span></div></div>
+                    <div class="pb-2"><h3 class="text-gray-500 font-semibold transition-colors duration-500" id="step-3-text">พร้อมรับแล้ว</h3><p class="text-xs text-gray-600">รอการตรวจสอบขั้นสุดท้าย</p></div>
                 </div>
             </div>
         </div>
@@ -102,42 +60,46 @@
     </main>
 
     <div class="fixed bottom-8 left-1/2 -translate-x-1/2 w-[90%] bg-[var(--mint-accent)] text-black p-5 rounded-2xl font-bold shadow-2xl flex items-center justify-between translate-y-[200%] transition-transform duration-700 z-50" id="alert-popup">
-        <div class="flex items-center gap-3">
-            <span class="material-symbols-outlined">verified</span>
-            <span class="text-sm tracking-tight">ออเดอร์ของคุณพร้อมที่เคาน์เตอร์แล้ว!</span>
-        </div>
+        <div class="flex items-center gap-3"><span class="material-symbols-outlined">verified</span><span class="text-sm tracking-tight">ออเดอร์ของคุณพร้อมที่เคาน์เตอร์แล้ว!</span></div>
         <button onclick="document.getElementById('alert-popup').style.transform = 'translate(-50%, 200%)'" class="bg-black text-white text-[10px] px-4 py-2 rounded-full uppercase tracking-widest">ตกลง</button>
     </div>
 
     <script>
+        // ใช้ตัวแปรเช็คสถานะเดิม เพื่อไม่ให้วาดหน้าจอซ้ำ
+        let lastStatusState = false; 
+
         function initStatus() {
             const current = JSON.parse(localStorage.getItem('currentOrder'));
             if (!current) return;
 
             document.getElementById('order-id-header').innerText = current.id;
-            document.getElementById('items-list').innerHTML = current.items.map(it => `
-                <div class="bg-[var(--card-bg)] p-4 rounded-2xl flex items-center justify-between border border-white/5">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center overflow-hidden">
-                            <img src="${it.image}" class="w-full h-full object-cover opacity-80">
+            
+            // Render Items (ทำครั้งเดียวตอนโหลด)
+            if(document.getElementById('items-list').innerHTML === "") {
+                document.getElementById('items-list').innerHTML = current.items.map(it => `
+                    <div class="bg-[var(--card-bg)] p-4 rounded-2xl flex items-center justify-between border border-white/5">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center overflow-hidden"><img src="${it.image}" class="w-full h-full object-cover opacity-80"></div>
+                            <div><p class="text-sm font-bold">${it.name}</p><p class="text-[10px] text-gray-500">x${it.qty}</p></div>
                         </div>
-                        <div>
-                            <p class="text-sm font-bold">${it.name}</p>
-                            <p class="text-[10px] text-gray-500">x${it.qty}</p>
-                        </div>
+                        <span class="text-sm font-semibold text-[var(--mint-accent)]">฿${it.price * it.qty}</span>
                     </div>
-                    <span class="text-sm font-semibold text-[var(--mint-accent)]">฿${it.price * it.qty}</span>
-                </div>
-            `).join('');
+                `).join('');
+            }
 
-            document.getElementById('progress-circle').style.strokeDashoffset = 276.46 * 0.7; // 30%
+            // Default State
+            document.getElementById('progress-circle').style.strokeDashoffset = 276.46 * 0.7;
             document.getElementById('step-2-icon').classList.replace('bg-white/5', 'bg-[var(--mint-accent)]');
             document.getElementById('step-2-symbol').classList.replace('text-gray-400', 'text-black');
             document.getElementById('step-2-text').classList.remove('opacity-50');
 
             const timer = setInterval(() => {
                 const done = JSON.parse(localStorage.getItem('completedOrders')) || [];
-                if (done.some(o => o.id === current.id)) {
+                const isDone = done.some(o => o.id === current.id);
+
+                // ถ้าสถานะเปลี่ยนเป็นเสร็จสิ้น และยังไม่ได้อัปเดต UI
+                if (isDone && !lastStatusState) {
+                    lastStatusState = true; // Mark as updated
                     clearInterval(timer);
                     
                     document.getElementById('progress-circle').style.strokeDashoffset = 0;
@@ -158,8 +120,11 @@
                     bell.classList.replace('text-gray-400', 'text-[var(--mint-accent)]');
                     document.getElementById('bell-dot').classList.remove('hidden');
                 }
-            }, 2000);
+            }, 1000); // Check every 1s
         }
+        
+        // Listen for cross-tab updates
+        window.addEventListener('storage', () => initStatus());
         initStatus();
     </script>
 </body>
