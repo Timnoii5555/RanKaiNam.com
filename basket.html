@@ -14,7 +14,6 @@
     .divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent); }
     .item-card { background: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%); }
 </style>
-<style> body { min-height: max(884px, 100dvh); } </style>
 </head>
 <body class="max-w-md mx-auto min-h-screen flex flex-col border-x border-white/5 relative overflow-x-hidden">
     <header class="px-6 py-4 flex items-center justify-between sticky top-0 bg-[var(--ios-blur)] backdrop-blur-xl z-50 mt-4">
@@ -48,8 +47,24 @@
         <div class="mt-6 flex justify-center"><div class="w-32 h-1 bg-white/20 rounded-full"></div></div>
     </footer>
 
-    <script>
-        function render() {
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC8GhbRCJ9HSU9WG45r3XFI9bhq_E26i7M",
+            authDomain: "rankainam.firebaseapp.com",
+            projectId: "rankainam",
+            storageBucket: "rankainam.firebasestorage.app",
+            messagingSenderId: "1042614850693",
+            appId: "1:1042614850693:web:c44f1dc85afa0db5e445ec",
+            measurementId: "G-LXQV5LMLTV"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.render = () => {
             let cart = JSON.parse(localStorage.getItem('cartData')) || [];
             const list = document.getElementById('cart-list');
             if (cart.length === 0) {
@@ -79,13 +94,13 @@
             updateTotals(total);
         }
 
-        function updateTotals(total) {
+        window.updateTotals = (total) => {
             const formatted = '฿ ' + total.toLocaleString();
             document.getElementById('sub-total').innerText = formatted;
             document.getElementById('grand-total').innerText = formatted;
         }
 
-        function changeQty(idx, d) {
+        window.changeQty = (idx, d) => {
             let cart = JSON.parse(localStorage.getItem('cartData'));
             cart[idx].qty += d;
             if (cart[idx].qty <= 0) cart.splice(idx, 1);
@@ -93,32 +108,33 @@
             render();
         }
 
-        function clearCart() { localStorage.removeItem('cartData'); render(); }
+        window.clearCart = () => { localStorage.removeItem('cartData'); render(); }
 
-        function confirmOrder() {
+        window.confirmOrder = async () => {
             let cart = JSON.parse(localStorage.getItem('cartData')) || [];
             if (cart.length === 0) return alert('กรุณาเลือกสินค้าก่อนครับ');
 
-            let lastNum = parseInt(localStorage.getItem('lastOrderNum')) || 0;
-            lastNum++;
-            localStorage.setItem('lastOrderNum', lastNum);
-            let orderID = '#' + String(lastNum).padStart(3, '0');
+            const orderNum = '#ORD-' + Math.floor(Math.random() * 10000);
 
-            let kitchen = JSON.parse(localStorage.getItem('kitchenOrders')) || [];
-            let newOrder = {
-                id: orderID,
+            const newOrder = {
+                orderNumber: orderNum,
                 items: cart,
                 total: cart.reduce((s,x)=>s+(x.price*x.qty), 0),
                 time: new Date().toLocaleTimeString('th-TH', {hour: '2-digit', minute:'2-digit'}),
-                status: 'pending'
+                status: 'pending',
+                timestamp: new Date()
             };
             
-            kitchen.push(newOrder);
-            localStorage.setItem('kitchenOrders', JSON.stringify(kitchen));
-            localStorage.setItem('currentOrder', JSON.stringify(newOrder));
-            localStorage.removeItem('cartData');
-            window.location.href = 'status.html';
+            try {
+                const docRef = await addDoc(collection(db, "orders"), newOrder);
+                localStorage.setItem('currentOrderId', docRef.id);
+                localStorage.removeItem('cartData');
+                window.location.href = 'status.html';
+            } catch (e) {
+                alert('ส่งออเดอร์ไม่สำเร็จ: ' + e.message + '\n(ตรวจสอบ Test Mode ใน Firebase)');
+            }
         }
+        
         render(); 
     </script>
 </body>

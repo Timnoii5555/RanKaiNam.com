@@ -16,7 +16,6 @@
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 </style>
-<style> body { min-height: max(884px, 100dvh); } </style>
 </head>
 <body class="text-white max-w-md mx-auto min-h-screen relative">
     <header class="p-6 flex justify-between items-center sticky top-0 z-50 bg-[#0A0A0A]/80 header-blur">
@@ -33,7 +32,9 @@
     </header>
 
     <div class="px-6 mb-6 flex gap-3 overflow-x-auto no-scrollbar" id="category-list"></div>
-    <main class="px-6 grid grid-cols-2 gap-5 pb-36" id="menu-grid"></main>
+    <main class="px-6 grid grid-cols-2 gap-5 pb-36" id="menu-grid">
+        <p class="col-span-2 text-center text-gray-500 py-10">กำลังเชื่อมต่อเมนูจาก Cloud...</p>
+    </main>
 
     <div class="fixed bottom-8 left-0 right-0 px-6 z-50 transition-all duration-300 transform translate-y-full" id="cart-bar">
         <a class="bg-[var(--primary-mint)] glow-mint h-16 rounded-full flex items-center justify-between px-6 text-black font-bold shadow-2xl transition-transform active:scale-95 overflow-hidden relative" href="basket.html">
@@ -51,79 +52,90 @@
         </a>
     </div>
 
-    <script>
-        let currentFilter = 'ทั้งหมด';
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        function loadData() {
-            const menus = JSON.parse(localStorage.getItem('myMenus')) || [];
-            
-            // สร้างหมวดหมู่
-            const categories = ['ทั้งหมด', ...new Set(menus.map(m => m.category || 'ทั่วไป'))];
-            document.getElementById('category-list').innerHTML = categories.map(cat => `
-                <button onclick="filterMenu('${cat}')" class="px-5 py-2 rounded-full text-sm font-medium whitespace-nowrap cursor-pointer transition-colors border border-transparent ${cat === currentFilter ? 'bg-[var(--primary-mint)] text-black font-semibold shadow-[0_0_15px_rgba(72,201,176,0.4)]' : 'glass-card text-gray-400 hover:border-white/20'}">${cat}</button>
-            `).join('');
+    const firebaseConfig = {
+        apiKey: "AIzaSyC8GhbRCJ9HSU9WG45r3XFI9bhq_E26i7M",
+        authDomain: "rankainam.firebaseapp.com",
+        projectId: "rankainam",
+        storageBucket: "rankainam.firebasestorage.app",
+        messagingSenderId: "1042614850693",
+        appId: "1:1042614850693:web:c44f1dc85afa0db5e445ec",
+        measurementId: "G-LXQV5LMLTV"
+    };
 
-            // เตรียมข้อมูล + Index
-            const menusWithIndex = menus.map((m, originalIndex) => ({ ...m, originalIndex }));
-            const filteredMenus = currentFilter === 'ทั้งหมด' ? menusWithIndex : menusWithIndex.filter(m => (m.category || 'ทั่วไป') === currentFilter);
-            
-            const grid = document.getElementById('menu-grid');
-            if (filteredMenus.length === 0) {
-                grid.innerHTML = '<p class="col-span-2 text-center text-gray-500 py-10">ยังไม่มีสินค้าในหมวดหมู่นี้</p>';
-            } else {
-                grid.innerHTML = filteredMenus.map(m => `
-                    <div class="glass-card p-3 rounded-[2rem] flex flex-col group relative overflow-hidden transition-all hover:border-[var(--primary-mint)]/30">
-                        <div class="relative mb-3">
-                            <img src="${m.image}" class="rounded-[1.5rem] w-full aspect-square object-cover shadow-2xl bg-white/5">
-                            <button onclick="addToCart(${m.originalIndex})" class="absolute bottom-2 right-2 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-full w-10 h-10 flex items-center justify-center hover:bg-[var(--primary-mint)] hover:text-black transition-all active:scale-90 shadow-lg">
-                                <span class="material-symbols-outlined text-[20px]">add</span>
-                            </button>
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    let allMenus = [];
+    let currentFilter = 'ทั้งหมด';
+
+    // โหลดเมนูจาก Firebase
+    onSnapshot(collection(db, "menus"), (snapshot) => {
+        allMenus = snapshot.docs.map(d => ({id: d.id, ...d.data()}));
+        renderMenu();
+    });
+
+    window.filterMenu = (cat) => { currentFilter = cat; renderMenu(); }
+
+    function renderMenu() {
+        const categories = ['ทั้งหมด', ...new Set(allMenus.map(m => m.category || 'ทั่วไป'))];
+        document.getElementById('category-list').innerHTML = categories.map(cat => `
+            <button onclick="filterMenu('${cat}')" class="px-5 py-2 rounded-full text-sm font-medium whitespace-nowrap cursor-pointer transition-colors border border-transparent ${cat === currentFilter ? 'bg-[var(--primary-mint)] text-black font-semibold shadow-[0_0_15px_rgba(72,201,176,0.4)]' : 'glass-card text-gray-400 hover:border-white/20'}">${cat}</button>
+        `).join('');
+
+        const filtered = currentFilter === 'ทั้งหมด' ? allMenus : allMenus.filter(m => (m.category || 'ทั่วไป') === currentFilter);
+        const grid = document.getElementById('menu-grid');
+        
+        if (filtered.length === 0) {
+            grid.innerHTML = '<p class="col-span-2 text-center text-gray-500 py-10">ไม่พบเมนู (กรุณาเพิ่มในหน้า Admin)</p>';
+        } else {
+            grid.innerHTML = filtered.map((m, idx) => `
+                <div class="glass-card p-3 rounded-[2rem] flex flex-col group relative overflow-hidden transition-all hover:border-[var(--primary-mint)]/30">
+                    <div class="relative mb-3">
+                        <img src="${m.image}" class="rounded-[1.5rem] w-full aspect-square object-cover shadow-2xl bg-white/5" onerror="this.src='https://via.placeholder.com/150'">
+                        <button onclick="addToCart('${m.id}')" class="absolute bottom-2 right-2 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-full w-10 h-10 flex items-center justify-center hover:bg-[var(--primary-mint)] hover:text-black transition-all active:scale-90 shadow-lg">
+                            <span class="material-symbols-outlined text-[20px]">add</span>
+                        </button>
+                    </div>
+                    <div class="px-1">
+                        <h3 class="font-medium text-sm text-gray-100 line-clamp-1">${m.name}</h3>
+                        <div class="flex justify-between items-end mt-1">
+                            <span class="text-[var(--primary-mint)] font-semibold block">฿ ${m.price}</span>
+                            <span class="text-[10px] text-gray-500 bg-white/5 px-2 py-0.5 rounded-lg">${m.category || 'ทั่วไป'}</span>
                         </div>
-                        <div class="px-1">
-                            <h3 class="font-medium text-sm text-gray-100 line-clamp-1">${m.name}</h3>
-                            <div class="flex justify-between items-end mt-1">
-                                <span class="text-[var(--primary-mint)] font-semibold block">฿ ${m.price}</span>
-                                <span class="text-[10px] text-gray-500 bg-white/5 px-2 py-0.5 rounded-lg">${m.category || 'ทั่วไป'}</span>
-                            </div>
-                        </div>
-                    </div>`).join('');
-            }
-            updateCartUI();
+                    </div>
+                </div>`).join('');
         }
+        updateCartUI();
+    }
 
-        function filterMenu(cat) { currentFilter = cat; loadData(); }
+    window.addToCart = (id) => {
+        const item = allMenus.find(m => m.id === id);
+        if (!item) return;
+        let cart = JSON.parse(localStorage.getItem('cartData')) || [];
+        let found = cart.find(x => x.id === item.id);
+        if(found) found.qty++; else cart.push({ id: item.id, name: item.name, price: item.price, image: item.image, qty: 1 });
+        localStorage.setItem('cartData', JSON.stringify(cart));
+        updateCartUI();
+        
+        const bar = document.getElementById('cart-bar');
+        bar.classList.add('scale-105');
+        setTimeout(() => bar.classList.remove('scale-105'), 150);
+    }
 
-        function addToCart(index) {
-            const allMenus = JSON.parse(localStorage.getItem('myMenus')) || [];
-            const item = allMenus[index]; 
-            if (!item) return;
+    function updateCartUI() {
+        let cart = JSON.parse(localStorage.getItem('cartData')) || [];
+        const count = cart.reduce((s,x)=>s+x.qty, 0);
+        const total = cart.reduce((s,x)=>s+(x.price*x.qty), 0);
+        document.getElementById('cart-count').innerText = count;
+        document.getElementById('cart-total').innerText = '฿ ' + total.toLocaleString();
+        const bar = document.getElementById('cart-bar');
+        if (count > 0) bar.classList.remove('translate-y-full'); else bar.classList.add('translate-y-full');
+    }
 
-            let cart = JSON.parse(localStorage.getItem('cartData')) || [];
-            let found = cart.find(x => x.name === item.name);
-            if(found) found.qty++; else cart.push({ name: item.name, price: item.price, image: item.image, qty: 1 });
-            
-            localStorage.setItem('cartData', JSON.stringify(cart));
-            updateCartUI();
-            
-            // Animation ปุ่มเด้ง
-            const bar = document.getElementById('cart-bar');
-            bar.classList.add('scale-105');
-            setTimeout(() => bar.classList.remove('scale-105'), 150);
-        }
-
-        function updateCartUI() {
-            let cart = JSON.parse(localStorage.getItem('cartData')) || [];
-            const count = cart.reduce((s,x)=>s+x.qty, 0);
-            const total = cart.reduce((s,x)=>s+(x.price*x.qty), 0);
-            document.getElementById('cart-count').innerText = count;
-            document.getElementById('cart-total').innerText = '฿ ' + total.toLocaleString();
-            const bar = document.getElementById('cart-bar');
-            if (count > 0) bar.classList.remove('translate-y-full'); else bar.classList.add('translate-y-full');
-        }
-
-        loadData();
-        // เพิ่มบรรทัดนี้ เพื่อให้เมื่อ Admin เพิ่มเมนู หรือมีการแก้ไขตะกร้าจากแท็บอื่น หน้าจอจะอัปเดตทันที
-        window.addEventListener('storage', loadData);
-    </script>
+    renderMenu();
+</script>
 </body>
 </html>
